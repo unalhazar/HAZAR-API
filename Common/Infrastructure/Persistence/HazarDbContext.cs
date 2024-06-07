@@ -1,7 +1,4 @@
-﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace Infrastructure.Persistence
+﻿namespace Infrastructure.Persistence
 {
     public class HazarDbContext : DbContext
     {
@@ -10,7 +7,7 @@ namespace Infrastructure.Persistence
         }
 
 
-        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Brand> Brands { get; set; }
 
 
 
