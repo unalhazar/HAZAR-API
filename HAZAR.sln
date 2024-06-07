@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.34929.205
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{31CA2910-5352-4C4E-89F9-F1E309CCE253}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7B0195CA-CFE4-46DB-9F9E-103F7C270F5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Common\Application\Application.csproj", "{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Common\Domain\Domain.csproj", "{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Common\Infrastructure\Infrastructure.csproj", "{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hazar", "Hazar", "{44BCD715-C63D-4925-821D-C6A9BFD00520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hazar.API", "Services\Hazar\Hazar.API\Hazar.API.csproj", "{15796474-B769-47DB-9F13-B5B452475E74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15796474-B769-47DB-9F13-B5B452475E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15796474-B769-47DB-9F13-B5B452475E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15796474-B769-47DB-9F13-B5B452475E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15796474-B769-47DB-9F13-B5B452475E74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F} = {31CA2910-5352-4C4E-89F9-F1E309CCE253}
+		{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913} = {31CA2910-5352-4C4E-89F9-F1E309CCE253}
+		{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF} = {31CA2910-5352-4C4E-89F9-F1E309CCE253}
+		{44BCD715-C63D-4925-821D-C6A9BFD00520} = {7B0195CA-CFE4-46DB-9F9E-103F7C270F5B}
+		{15796474-B769-47DB-9F13-B5B452475E74} = {44BCD715-C63D-4925-821D-C6A9BFD00520}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F218060-8323-4BEC-8E33-0BF104EA102D}
+	EndGlobalSection
+EndGlobal
