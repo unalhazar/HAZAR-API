@@ -7,7 +7,7 @@
         }
 
 
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ApplicationUser> Users { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
 
 
