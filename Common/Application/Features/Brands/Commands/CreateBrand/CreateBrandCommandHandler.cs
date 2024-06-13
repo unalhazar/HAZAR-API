@@ -16,7 +16,7 @@ namespace Application.Features.Brands.Commands.CreateBrand
 
             public Task<BrandResponse> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+
             }
         }
 
