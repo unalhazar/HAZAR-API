@@ -7,7 +7,7 @@ namespace Domain.Base
         [Key]
         public long Id { get; set; }
 
-        public short? State { get; set; }
+        public bool? State { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

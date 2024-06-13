@@ -2,9 +2,9 @@
 
 namespace Application.Features.Brands.Commands.CreateBrand
 {
-    public partial class CreateBrandCommand : IRequest<BrandResponse>
+    public class CreateBrandCommand : IRequest<ProcessResult<BrandResponse>>
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
     }
 }

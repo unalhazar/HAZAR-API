@@ -37,6 +37,7 @@ namespace Infrastructure.DependencyInjection
 
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

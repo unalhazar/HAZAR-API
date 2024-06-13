@@ -1,6 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Features.Brands.Commands.CreateBrand;
 using Domain.Request.Brands;
-using Domain.Response.Brands;
 
 namespace Application.Mappings
 {
@@ -8,7 +7,7 @@ namespace Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<BrandResponse, BrandRequest>().ReverseMap();
+            CreateMap<CreateBrandCommand, BrandRequest>().ReverseMap();
         }
     }
 }

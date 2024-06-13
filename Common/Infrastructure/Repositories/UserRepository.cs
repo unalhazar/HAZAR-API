@@ -13,11 +13,13 @@ namespace Infrastructure.Repositories
     {
         private readonly HazarDbContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration)
+        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, IUnitOfWork unitOfWork)
         {
             _dbContext = hazarDbContext;
             _configuration = configuration;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
@@ -69,10 +71,13 @@ namespace Infrastructure.Repositories
                 Name = registerUserRequest.Name,
                 Email = registerUserRequest.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.Now,
+                State = true
             });
 
+            //_unitOfWork.SaveChangesAsync();
             await _dbContext.SaveChangesAsync();
+
             return new RegistrationResponse(true, "Registration completed");
 
         }
