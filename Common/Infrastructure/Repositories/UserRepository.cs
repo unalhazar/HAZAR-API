@@ -1,15 +1,23 @@
 ﻿using Application.Contracts;
 using Domain.Request.Users;
 using Domain.Response.Users;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Infrastructure.Repositories
 {
     public class UserRepository : IUser
     {
         private readonly HazarDbContext _dbContext;
-        public UserRepository(HazarDbContext hazarDbContext)
+        private readonly IConfiguration _configuration;
+
+        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration)
         {
             _dbContext = hazarDbContext;
+            _configuration = configuration;
         }
 
         public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
@@ -22,6 +30,29 @@ namespace Infrastructure.Repositories
                 return new LoginResponse(true, "Login successfully", GenerateJWTToken(getUser));
             else
                 return new LoginResponse(false, "Invalid credentials");
+        }
+
+        private string GenerateJWTToken(ApplicationUser user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var userClaims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimTypes.Name,user.Name),
+                new Claim(ClaimTypes.Email,user.Email)
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: userClaims,
+                expires: DateTime.Now.AddDays(5),
+                signingCredentials: credentials
+            );
+
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private async Task<ApplicationUser> FindUserByEmail(string email) =>
@@ -37,7 +68,8 @@ namespace Infrastructure.Repositories
             {
                 Name = registerUserRequest.Name,
                 Email = registerUserRequest.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password)
+                Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
+                CreatedDate = DateTime.Now
             });
 
             await _dbContext.SaveChangesAsync();

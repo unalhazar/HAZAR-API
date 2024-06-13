@@ -7,20 +7,20 @@ namespace Domain.Base
         [Key]
         public long Id { get; set; }
 
-        public short Durum { get; set; }
+        public short State { get; set; }
 
-        public DateTime? OlusturulmaTarih { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
-        public long? OlusturanKullaniciId { get; set; }
+        public long? CreatedUserId { get; set; }
 
-        public DateTime? GuncellenmeTarih { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
-        public long? GuncelleyenKullaniciId { get; set; }
+        public long? UpdatedUserId { get; set; }
 
-        public DateTime? SilinmeTarih { get; set; }
+        public DateTime? DeletedDate { get; set; }
 
-        public long? SilenKullaniciId { get; set; }
+        public long? DeletedUserId { get; set; }
 
-        public Guid? Anahtar { get; set; }
+        public Guid? Key { get; set; }
     }
 }
