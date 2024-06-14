@@ -82,16 +82,6 @@ namespace Infrastructure.Repositories
                 State = true
             });
 
-            //_dbContext.Users.Add(new ApplicationUser()
-            //{
-            //    Name = registerUserRequest.Name,
-            //    Email = registerUserRequest.Email,
-            //    Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
-            //    CreatedDate = DateTime.Now,
-            //    State = true
-            //});
-
-
             _loggingService.Log("New user registered.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
 
             return new RegistrationResponse(true, "Registration completed");
