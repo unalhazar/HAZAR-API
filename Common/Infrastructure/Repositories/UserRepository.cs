@@ -1,6 +1,8 @@
 ﻿using Application.Contracts;
+using Domain;
 using Domain.Request.Users;
 using Domain.Response.Users;
+using Infrastructure.AppServices.LogService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,13 +15,14 @@ namespace Infrastructure.Repositories
     {
         private readonly HazarDbContext _dbContext;
         private readonly IConfiguration _configuration;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, IUnitOfWork unitOfWork)
+        private readonly ILoggingService _loggingService;
+        private readonly IApplicationUserRepository _applicationUserRepository;
+        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, ILoggingService loggingService, IApplicationUserRepository applicationUserRepository)
         {
             _dbContext = hazarDbContext;
             _configuration = configuration;
-            _unitOfWork = unitOfWork;
+            _loggingService = loggingService;
+            _applicationUserRepository = applicationUserRepository;
         }
 
         public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
@@ -29,7 +32,10 @@ namespace Infrastructure.Repositories
 
             bool checkPassword = BCrypt.Net.BCrypt.Verify(loginRequest.Password, getUser.Password);
             if (checkPassword)
+            {
+                _loggingService.Log("User logged in.", operation: Operation.Login.ToString(), loginRequest.Email, logLevel: Domain.LogLevel.Information);
                 return new LoginResponse(true, "Login successfully", GenerateJWTToken(getUser));
+            }
             else
                 return new LoginResponse(false, "Invalid credentials");
         }
@@ -66,7 +72,8 @@ namespace Infrastructure.Repositories
             if (getUser != null)
                 return new RegistrationResponse(false, "User already exist");
 
-            _dbContext.Users.Add(new ApplicationUser()
+
+            await _applicationUserRepository.AddAsync(new ApplicationUser()
             {
                 Name = registerUserRequest.Name,
                 Email = registerUserRequest.Email,
@@ -75,8 +82,17 @@ namespace Infrastructure.Repositories
                 State = true
             });
 
-            await _unitOfWork.SaveChangesAsync();
-            _unitOfWork.Dispose();
+            //_dbContext.Users.Add(new ApplicationUser()
+            //{
+            //    Name = registerUserRequest.Name,
+            //    Email = registerUserRequest.Email,
+            //    Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
+            //    CreatedDate = DateTime.Now,
+            //    State = true
+            //});
+
+
+            _loggingService.Log("New user registered.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
 
             return new RegistrationResponse(true, "Registration completed");
 

@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Infrastructure.AppServices.LogService;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +38,10 @@ namespace Infrastructure.DependencyInjection
 
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ILoggingRepository, LoggingRepository>();
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<ILoggingService, LoggingService>();
+            // Diğer servis kayıtları
 
             return services;
         }

@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{31CA29
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7B0195CA-CFE4-46DB-9F9E-103F7C270F5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Common\Application\Application.csproj", "{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Common\Application\Application.csproj", "{2793BF5C-7662-4A48-BAF5-6AD3F3FF917F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Common\Domain\Domain.csproj", "{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Common\Domain\Domain.csproj", "{46267AA2-1F9B-45C3-8BB3-BDC9DE2CF913}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Common\Infrastructure\Infrastructure.csproj", "{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Common\Infrastructure\Infrastructure.csproj", "{C3C6CBAF-0F49-4240-A5E2-89E28431E3FF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hazar", "Hazar", "{44BCD715-C63D-4925-821D-C6A9BFD00520}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hazar.API", "Services\Hazar\Hazar.API\Hazar.API.csproj", "{15796474-B769-47DB-9F13-B5B452475E74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hazar.API", "Services\Hazar\Hazar.API\Hazar.API.csproj", "{15796474-B769-47DB-9F13-B5B452475E74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

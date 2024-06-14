@@ -9,8 +9,7 @@
 
         public virtual DbSet<ApplicationUser> Users { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
-
-
+        public virtual DbSet<Log> Logs { get; set; }
 
 
 
