@@ -40,6 +40,8 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILoggingService, LoggingService>();
             // Diğer servis kayıtları
 
