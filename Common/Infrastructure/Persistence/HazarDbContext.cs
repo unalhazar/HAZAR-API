@@ -9,6 +9,8 @@
 
         public virtual DbSet<ApplicationUser> Users { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<Category> Categorys { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
 
 

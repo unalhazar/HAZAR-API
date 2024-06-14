@@ -1,9 +1,11 @@
 ﻿using Domain.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
-    public class Brand : BaseEntity
+    public class Category : BaseEntity
     {
+        [Required]
         public string Name { get; set; }
 
         public List<Product> Products { get; set; } = new List<Product>();
