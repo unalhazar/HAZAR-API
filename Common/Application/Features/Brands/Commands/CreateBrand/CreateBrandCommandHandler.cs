@@ -1,5 +1,4 @@
 ﻿using Application.Contracts.Persistence;
-using Domain.Entities;
 using Domain.Response.Brands;
 
 namespace Application.Features.Brands.Commands.CreateBrand
@@ -21,15 +20,17 @@ namespace Application.Features.Brands.Commands.CreateBrand
 
             try
             {
-                var entity = mapper.Map<Brand>(request);
-                await brandRepository.AddAsync(entity);
+                using (System.Transactions.TransactionScope Transaction = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required, TimeSpan.FromMinutes(30), System.Transactions.TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    var entity = mapper.Map<Brand>(request);
+                    await brandRepository.AddAsync(entity);
+                    response.Result = mapper.Map<BrandResponse>(entity);
+                    Transaction.Complete();
+                }
 
-                response.Result = mapper.Map<BrandResponse>(entity);
                 response.Durum = true;
                 response.Mesaj = MesajConstats.EklemeMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;
-
-                return response;
             }
             catch (Exception ex)
             {
