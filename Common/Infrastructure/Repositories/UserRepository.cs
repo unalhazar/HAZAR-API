@@ -75,8 +75,8 @@ namespace Infrastructure.Repositories
                 State = true
             });
 
-            //_unitOfWork.SaveChangesAsync();
-            await _dbContext.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
+            _unitOfWork.Dispose();
 
             return new RegistrationResponse(true, "Registration completed");
 

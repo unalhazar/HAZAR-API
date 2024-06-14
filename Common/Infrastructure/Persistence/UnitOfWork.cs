@@ -2,9 +2,21 @@
 {
     internal sealed class UnitOfWork : IUnitOfWork
     {
-        public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        private readonly HazarDbContext _dbContext;
+
+        public UnitOfWork(HazarDbContext dbContext)
         {
-            return Task.CompletedTask;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
+
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public void Dispose()
+        {
+            _dbContext?.Dispose();
         }
     }
 }

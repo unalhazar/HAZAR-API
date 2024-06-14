@@ -36,7 +36,6 @@ namespace Application.Features.Brands.Commands.CreateBrand
             }
             catch (Exception ex)
             {
-
                 response.Durum = false;
                 response.Mesaj = MesajConstats.HataMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.InternalServerError;

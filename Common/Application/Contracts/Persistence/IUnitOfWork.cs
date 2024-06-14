@@ -1,6 +1,6 @@
 ﻿namespace Application.Contracts.Persistence
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
