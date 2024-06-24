@@ -12,8 +12,7 @@
         public virtual DbSet<Category> Categorys { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
-
-
+        public virtual DbSet<TokenBlacklist> TokenBlacklists { get; set; }
 
 
 

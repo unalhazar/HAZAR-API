@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
 using Infrastructure.AppServices.LogService;
+using Infrastructure.AppServices.TokenBlacklistService;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +44,7 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILoggingService, LoggingService>();
+            services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
             // Diğer servis kayıtları
 
             return services;

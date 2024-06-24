@@ -1,3 +1,4 @@
+using Hazar.API.Middleware;
 using Infrastructure.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -40,7 +41,11 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.InfrastructureServices(builder.Configuration);
 
 
+
+
 var app = builder.Build();
+
+app.UseMiddleware<TokenBlacklistMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
