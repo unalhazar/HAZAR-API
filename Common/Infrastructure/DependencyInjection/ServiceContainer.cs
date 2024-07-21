@@ -15,7 +15,7 @@ namespace Infrastructure.DependencyInjection
         public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<HazarDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("Default"),
+                options => options.UseNpgsql(configuration.GetConnectionString("Default"),
                 b => b.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)),
                 ServiceLifetime.Scoped);
 

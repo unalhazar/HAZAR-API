@@ -78,7 +78,7 @@ namespace Infrastructure.Repositories
                 Name = registerUserRequest.Name,
                 Email = registerUserRequest.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
                 State = true
             });
 

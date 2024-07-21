@@ -13,9 +13,9 @@ namespace Domain.Entities
         [Required]
         public int Stock { get; set; }
         public string ImageUrl { get; set; }
-        public int CategoryId { get; set; }
-        public Category Category { get; set; } = new Category();
-        public int BrandId { get; set; }
-        public Brand Brand { get; set; } = new Brand();
+        public long CategoryId { get; set; }
+        public Category Category { get; set; }
+        public long BrandId { get; set; }
+        public Brand Brand { get; set; }
     }
 }
