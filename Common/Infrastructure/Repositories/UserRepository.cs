@@ -17,12 +17,14 @@ namespace Infrastructure.Repositories
         private readonly IConfiguration _configuration;
         private readonly ILoggingService _loggingService;
         private readonly IApplicationUserRepository _applicationUserRepository;
-        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, ILoggingService loggingService, IApplicationUserRepository applicationUserRepository)
+        private readonly ITokenBlacklistService _tokenBlacklistService;
+        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, ILoggingService loggingService, IApplicationUserRepository applicationUserRepository, ITokenBlacklistService tokenBlacklistService)
         {
             _dbContext = hazarDbContext;
             _configuration = configuration;
             _loggingService = loggingService;
             _applicationUserRepository = applicationUserRepository;
+            _tokenBlacklistService = tokenBlacklistService;
         }
 
         public async Task<LoginResponse> LoginUserAsync(LoginRequest loginRequest)
@@ -34,12 +36,65 @@ namespace Infrastructure.Repositories
             if (checkPassword)
             {
                 _loggingService.Log("User logged in.", operation: Operation.Login.ToString(), loginRequest.Email, logLevel: Domain.LogLevel.Information);
-                return new LoginResponse(true, "Login successfully", GenerateJWTToken(getUser));
+                var jwtToken = GenerateJWTToken(getUser);
+                var refreshToken = GenerateRefreshToken(getUser);
+                return new LoginResponse(true, "Login successful", jwtToken, refreshToken.Token);
             }
             else
                 return new LoginResponse(false, "Invalid credentials");
         }
 
+        public async Task<LogoutResponse> LogoutUserAsync(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return new LogoutResponse(false, "Token bulunamadı.");
+            }
+
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var expirationDate = jwtToken.ValidTo;
+
+            await _tokenBlacklistService.AddTokenToBlacklist(token, expirationDate);
+
+            return new LogoutResponse(true, "Çıkış başarılı.");
+        }
+
+        private RefreshToken GenerateRefreshToken(ApplicationUser user)
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Guid.NewGuid().ToString(),
+                UserId = (int)user.Id,
+                ExpiryDate = DateTime.UtcNow.AddDays(30), // Token'in geçerlilik süresi
+                IsActive = true
+            };
+            _dbContext.RefreshTokens.Add(refreshToken);
+            _dbContext.SaveChanges();
+            return refreshToken;
+        }
+
+        public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
+        {
+            var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == request.Token && rt.IsActive);
+            if (refreshToken == null || refreshToken.ExpiryDate <= DateTime.UtcNow)
+            {
+                return new RefreshTokenResponse(false, "Invalid or expired refresh token");
+            }
+
+            var user = await _dbContext.Users.FindAsync(refreshToken.UserId);
+            if (user == null)
+            {
+                return new RefreshTokenResponse(false, "Invalid refresh token");
+            }
+
+            var newJwtToken = GenerateJWTToken(user);
+            var newRefreshToken = GenerateRefreshToken(user);
+
+            refreshToken.IsActive = false;
+            _dbContext.SaveChanges();
+
+            return new RefreshTokenResponse(true, newJwtToken, newRefreshToken.Token);
+        }
         private string GenerateJWTToken(ApplicationUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));

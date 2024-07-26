@@ -1,4 +1,4 @@
 ﻿namespace Domain.Response.Users
 {
-    public record LoginResponse(bool Flag, string Message = null!, string Token = null!);
+    public record LoginResponse(bool Flag, string Message = null!, string Token = null!, string token = null);
 }

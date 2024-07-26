@@ -12,6 +12,7 @@
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<TokenBlacklist> TokenBlacklists { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

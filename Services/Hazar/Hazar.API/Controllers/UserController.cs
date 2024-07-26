@@ -1,10 +1,8 @@
 ﻿using Application.Contracts;
-using Application.Contracts.Persistence;
 using Domain.Request.Users;
 using Domain.Response.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Hazar.API.Controllers
 {
@@ -13,12 +11,10 @@ namespace Hazar.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUser user;
-        private readonly ITokenBlacklistService _tokenBlacklistService;
 
-        public UserController(IUser user, ITokenBlacklistService tokenBlacklistService)
+        public UserController(IUser user)
         {
             this.user = user;
-            _tokenBlacklistService = tokenBlacklistService;
         }
 
         [HttpPost("login")]
@@ -42,18 +38,27 @@ namespace Hazar.API.Controllers
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (string.IsNullOrEmpty(token))
+            var result = await user.LogoutUserAsync(token);
+            if (!result.Success)
             {
-                return BadRequest(new LogoutResponse(false, "Token bulunamadı."));
+                return BadRequest(result);
             }
 
-            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            var expirationDate = jwtToken.ValidTo;
-
-            await _tokenBlacklistService.AddTokenToBlacklist(token, expirationDate);
-
-            return Ok(new LogoutResponse(true, "Çıkış başarılı."));
+            return Ok(result);
         }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            var response = await user.RefreshTokenAsync(request);
+            if (!response.Success)
+            {
+                return Unauthorized(new { message = response.Message });
+            }
+            return Ok(new { token = response.JwtToken, refreshToken = response.RefreshToken });
+        }
+
+
 
 
     }
