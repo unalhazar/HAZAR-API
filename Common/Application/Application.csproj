@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Brands\Queries\GetByIdBrand\" />
-    <Folder Include="Features\Brands\Rules\" />
-    <Folder Include="Features\Brands\Profiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.9.1" />
     <PackageReference Include="MediatR" Version="12.3.0" />

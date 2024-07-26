@@ -1,30 +1,29 @@
 ﻿using Application.Contracts.Persistence;
 using Domain.Response.Brands;
 
-namespace Application.Features.Brands.Commands.CreateBrand
+namespace Application.Features.Brands.Queries.GetAllBrand
 {
-    public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, ProcessResult<BrandResponse>>
+    public class GetAllBrandQueryHandler : IRequestHandler<GetAllBrandQuery, ProcessResult<List<BrandResponse>>>
     {
-        private readonly IBrandRepository brandRepository;
-        private readonly IMapper mapper;
-
-        public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper)
+        private readonly IBrandRepository _brandRepository;
+        private readonly IMapper _mapper;
+        public GetAllBrandQueryHandler(IBrandRepository brandRepository, IMapper mapper)
         {
-            this.brandRepository = brandRepository;
-            this.mapper = mapper;
+            _brandRepository = brandRepository;
+            _mapper = mapper;
         }
 
-        public async Task<ProcessResult<BrandResponse>> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+        public async Task<ProcessResult<List<BrandResponse>>> Handle(GetAllBrandQuery request, CancellationToken cancellationToken)
         {
-            ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
+            ProcessResult<List<BrandResponse>> response = new();
 
             try
             {
                 using (System.Transactions.TransactionScope Transaction = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required, TimeSpan.FromMinutes(30), System.Transactions.TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    var entity = mapper.Map<Brand>(request);
-                    await brandRepository.AddAsync(entity);
-                    response.Result = mapper.Map<BrandResponse>(entity);
+                    var brands = await _brandRepository.GetAllAsync();
+                    var entities = brands.ToList();
+                    response.Result = _mapper.Map<List<BrandResponse>>(entities);
                     Transaction.Complete();
                 }
 
@@ -32,6 +31,7 @@ namespace Application.Features.Brands.Commands.CreateBrand
                 response.Mesaj = MesajConstats.EklemeMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;
             }
+
             catch (Exception)
             {
                 response.Durum = false;
@@ -41,9 +41,6 @@ namespace Application.Features.Brands.Commands.CreateBrand
 
             return response;
 
-
         }
     }
-
 }
-
