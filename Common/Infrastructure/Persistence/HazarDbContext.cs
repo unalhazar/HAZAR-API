@@ -4,8 +4,6 @@
     {
         public HazarDbContext(DbContextOptions<HazarDbContext> options) : base(options)
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         }
 
         public virtual DbSet<ApplicationUser> Users { get; set; }

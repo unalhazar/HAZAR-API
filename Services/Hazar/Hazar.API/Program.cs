@@ -40,9 +40,6 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.InfrastructureServices(builder.Configuration);
 
-
-
-
 var app = builder.Build();
 
 app.UseMiddleware<TokenBlacklistMiddleware>();

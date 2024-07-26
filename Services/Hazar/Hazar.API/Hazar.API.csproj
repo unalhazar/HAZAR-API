@@ -23,4 +23,8 @@
 	  <ProjectReference Include="..\..\..\Common\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SqliteDB\" />
+  </ItemGroup>
+
 </Project>
