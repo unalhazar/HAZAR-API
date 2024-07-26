@@ -129,17 +129,23 @@ namespace Infrastructure.Repositories
                 return new RegistrationResponse(false, "User already exist");
 
 
-            await _applicationUserRepository.AddAsync(new ApplicationUser()
+            var result = await _applicationUserRepository.AddAsync(new ApplicationUser()
             {
                 Name = registerUserRequest.Name,
                 Email = registerUserRequest.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
                 CreatedDate = DateTime.UtcNow,
-                State = true
+                State = true,
+                Role = UserRoles.User,
             });
 
-            _loggingService.Log("New user registered.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
+            if (result == null)
+            {
+                _loggingService.Log("New user registered Fail.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
+                return new RegistrationResponse(true, "Registration failed");
+            }
 
+            _loggingService.Log("New user registered.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
             return new RegistrationResponse(true, "Registration completed");
 
         }
