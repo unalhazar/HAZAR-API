@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Products\Commands\" />
+    <Folder Include="Features\Products\Rules\" />
+    <Folder Include="Features\Products\Profiles\" />
+  </ItemGroup>
+
 </Project>
