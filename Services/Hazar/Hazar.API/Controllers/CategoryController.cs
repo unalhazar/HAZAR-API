@@ -1,7 +1,6 @@
 ﻿using Application.Features.Brands.Commands.CreateBrand;
 using Application.Features.Brands.Commands.DeleteBrand;
 using Application.Features.Brands.Commands.UpdateBrand;
-using Application.Features.Brands.Queries.GetAllBrand;
 using Application.Features.Brands.Queries.GetByIdBrand;
 using Domain.Response.Brands;
 using Microsoft.AspNetCore.Mvc;
@@ -10,21 +9,21 @@ namespace Hazar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandController : ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly IMediator mediator;
-
-        public BrandController(IMediator mediator)
+        public CategoryController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ProcessResult<List<BrandResponse>>>> GetAll()
-        {
-            var query = new GetAllBrandQuery();
-            return await mediator.Send(query);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<ProcessResult<List<CategoryResponse>>>> GetAll()
+        //{
+        //    //var query = new Get();
+        //    //return await mediator.Send(query);
+
+        //}
 
         [HttpGet]
         public async Task<ActionResult<ProcessResult<BrandResponse>>> GetById(long id)

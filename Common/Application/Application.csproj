@@ -19,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Products\Commands\" />
+    <Folder Include="Features\Categories\Rules\" />
+    <Folder Include="Features\Categories\Profiles\" />
     <Folder Include="Features\Products\Rules\" />
     <Folder Include="Features\Products\Profiles\" />
   </ItemGroup>

@@ -19,13 +19,9 @@ namespace Application.Features.Brands.Queries.GetByIdBrand
 
             try
             {
-                using (System.Transactions.TransactionScope Transaction = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required, TimeSpan.FromSeconds(30), System.Transactions.TransactionScopeAsyncFlowOption.Enabled))
-                {
+                var entitybrand = await brandRepository.GetByIdAsync(request.Id);
+                response.Result = mapper.Map<BrandResponse>(entitybrand);
 
-                    var entitybrand = await brandRepository.GetByIdAsync(request.Id);
-                    response.Result = mapper.Map<BrandResponse>(entitybrand);
-                    Transaction.Complete();
-                }
 
                 response.Durum = true;
                 response.Mesaj = MesajConstats.EklemeMesaji;

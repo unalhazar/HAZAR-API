@@ -1,5 +1,8 @@
-﻿using Application.Features.Products.Queries.GetAllProducts;
-using MediatR;
+﻿using Application.Features.Products.Commands.Create;
+using Application.Features.Products.Commands.Delete;
+using Application.Features.Products.Commands.Update;
+using Application.Features.Products.Queries.GetAllProducts;
+using Application.Features.Products.Queries.GetById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -23,30 +26,31 @@ namespace Hazar.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetById()
+        public async Task<IActionResult> GetById(long id)
         {
-            //var result = await _mediator.Send(new GetAllProductsQuery());
+            var query = new GetByIdProductQuery() { Id = id };
+            var result = await _mediator.Send(query);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(CreateProductCommand request)
         {
-            //var result = await _mediator.Send(new GetAllProductsQuery());
+            var result = await _mediator.Send(request);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update(UpdateProductCommand request)
         {
-            //var result = await _mediator.Send(new GetAllProductsQuery());
+            var result = await _mediator.Send(request);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete(DeleteProductCommand request)
         {
-            //var result = await _mediator.Send(new GetAllProductsQuery());
+            var result = await _mediator.Send(request);
             return Ok();
         }
 
