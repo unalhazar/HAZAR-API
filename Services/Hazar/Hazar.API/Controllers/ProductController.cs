@@ -25,34 +25,34 @@ namespace Hazar.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(long id)
         {
-            var query = new GetByIdProductQuery() { Id = id };
+            var query = new GetByIdProductQuery { Id = id };
             var result = await _mediator.Send(query);
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProductCommand request)
+        public async Task<IActionResult> Create([FromBody] CreateProductCommand request)
         {
             var result = await _mediator.Send(request);
-            return Ok();
+            return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update(UpdateProductCommand request)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateProductCommand request)
         {
             var result = await _mediator.Send(request);
-            return Ok();
+            return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(DeleteProductCommand request)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(long id)
         {
-            var result = await _mediator.Send(request);
-            return Ok();
+            var command = new DeleteProductCommand { Id = id };
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
-
     }
 }

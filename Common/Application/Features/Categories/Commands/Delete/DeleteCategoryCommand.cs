@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Features.Categories.Commands.Delete
+﻿namespace Application.Features.Categories.Commands.Delete
 {
-    internal class DeleteCategoryCommand
+    public class DeleteCategoryCommand
     {
     }
 }

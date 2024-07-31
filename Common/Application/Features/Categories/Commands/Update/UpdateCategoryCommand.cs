@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Features.Categories.Commands.Update
+﻿namespace Application.Features.Categories.Commands.Update
 {
-    internal class UpdateCategoryCommand
+    public class UpdateCategoryCommand
     {
     }
 }

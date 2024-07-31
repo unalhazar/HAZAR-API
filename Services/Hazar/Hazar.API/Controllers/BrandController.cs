@@ -26,14 +26,12 @@ namespace Hazar.API.Controllers
             return await mediator.Send(query);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ProcessResult<BrandResponse>>> GetById(long id)
         {
-            var query = new GetByIdBrandQuery() { Id = id };
-            var result = await mediator.Send(query);
-            return result;
+            var query = new GetByIdBrandQuery { Id = id };
+            return await mediator.Send(query);
         }
-
 
         [HttpPost]
         public async Task<ActionResult<ProcessResult<BrandResponse>>> Create([FromBody] CreateBrandCommand cmd)
@@ -42,17 +40,17 @@ namespace Hazar.API.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<ProcessResult<BrandResponse>>> Update([FromBody] UpdateBrandCommand cmd)
         {
             var result = await mediator.Send(cmd);
             return result;
         }
 
-        [HttpPost]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<ProcessResult<BrandResponse>>> Delete(long id)
         {
-            var cmd = new DeleteBrandCommand() { Id = id };
+            var cmd = new DeleteBrandCommand { Id = id };
             var result = await mediator.Send(cmd);
             return result;
         }
