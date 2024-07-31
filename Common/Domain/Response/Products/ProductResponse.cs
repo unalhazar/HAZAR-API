@@ -1,14 +1,11 @@
-﻿using Domain.Base;
-using Domain.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Response.Product
+namespace Domain.Response.Products
 {
     public class ProductResponse : BaseResponse
     {
         [Required]
         public string Name { get; set; }
-        public string Description { get; set; }
         [Required]
         public decimal Price { get; set; }
         [Required]

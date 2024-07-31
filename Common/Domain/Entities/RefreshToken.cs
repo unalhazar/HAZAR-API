@@ -1,8 +1,6 @@
-﻿using Domain.Base;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
-    public class RefreshToken : BaseEntity
+    public class RefreshToken
     {
         public int Id { get; set; }
         public string Token { get; set; }

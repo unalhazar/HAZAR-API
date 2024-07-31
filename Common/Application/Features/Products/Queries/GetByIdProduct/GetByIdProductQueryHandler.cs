@@ -1,6 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Application.Features.Products.Queries.GetById;
-using Domain.Response.Product;
+using Domain.Response.Products;
 
 namespace Application.Features.Products.Queries.GetByIdProduct
 {

@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.Persistence;
-using Domain.Response.Product;
+using Domain.Response.Products;
 
 namespace Application.Features.Products.Commands.Create
 {

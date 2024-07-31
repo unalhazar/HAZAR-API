@@ -15,14 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Features\Categories\Rules\" />
     <Folder Include="Features\Categories\Profiles\" />
     <Folder Include="Features\Products\Rules\" />
     <Folder Include="Features\Products\Profiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

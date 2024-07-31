@@ -20,12 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\..\..\Common\Application\Application.csproj" />
-	  <ProjectReference Include="..\..\..\Common\Infrastructure\Infrastructure.csproj" />
+    <Folder Include="SqliteDB\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SqliteDB\" />
+    <ProjectReference Include="..\..\..\Common\Application\Application.csproj" />
+    <ProjectReference Include="..\..\..\Common\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

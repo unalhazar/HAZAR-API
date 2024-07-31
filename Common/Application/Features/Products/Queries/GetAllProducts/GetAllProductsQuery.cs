@@ -1,4 +1,4 @@
-﻿using Domain.Response.Product;
+﻿using Domain.Response.Products;
 
 namespace Application.Features.Products.Queries.GetAllProducts
 {

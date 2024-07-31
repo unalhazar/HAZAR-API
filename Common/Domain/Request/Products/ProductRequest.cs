@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Domain.Request.Products
+﻿namespace Domain.Request.Products
 {
     public class ProductRequest
     {
