@@ -36,7 +36,6 @@ namespace Infrastructure.DependencyInjection
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
                 };
             });
-
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
