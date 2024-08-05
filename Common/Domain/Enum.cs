@@ -18,8 +18,8 @@
     }
     public enum State
     {
-        Aktif = 1,
-        Pasif,
+        Pasif = 0,
+        Aktif,
         None
     }
 }

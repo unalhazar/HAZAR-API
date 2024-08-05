@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Persistence;
+using Domain;
 using Domain.Response.Brands;
 
 namespace Application.Features.Brands.Commands.DeleteBrand
@@ -19,24 +20,33 @@ namespace Application.Features.Brands.Commands.DeleteBrand
             ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
             try
             {
+                var entity = await brandRepository.GetByIdAsync(request.Id);
+                if (entity == null)
+                {
+                    response.Durum = false;
+                    response.Mesaj = "Brand not found.";
+                    response.HttpStatusCode = System.Net.HttpStatusCode.NotFound;
+                    return response;
+                }
+                entity.DeletedDate = DateTime.UtcNow;
+                entity.State = (int)State.Pasif;
 
-                var entity = mapper.Map<Brand>(request);
-                await brandRepository.DeleteAsync(entity);
+                await brandRepository.UpdateAsync(entity);
                 response.Result = mapper.Map<BrandResponse>(entity);
-
 
                 response.Durum = true;
                 response.Mesaj = MesajConstats.SilmeMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response.Durum = false;
-                response.Mesaj = MesajConstats.HataMesaji;
+                response.Mesaj = $"{MesajConstats.HataMesaji} - {ex.Message}";
                 response.HttpStatusCode = System.Net.HttpStatusCode.InternalServerError;
             }
 
             return response;
         }
+
     }
 }

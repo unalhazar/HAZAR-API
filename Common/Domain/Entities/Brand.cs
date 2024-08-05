@@ -1,11 +1,9 @@
-﻿using Domain.Base;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Brand : BaseEntity
     {
         public string Name { get; set; }
 
-        public List<Product> Products { get; set; } = new List<Product>();
+        public List<Product?> Products { get; set; } = new List<Product?>();
     }
 }

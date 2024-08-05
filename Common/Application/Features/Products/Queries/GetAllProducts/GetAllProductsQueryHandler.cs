@@ -20,16 +20,12 @@ namespace Application.Features.Products.Queries.GetAllProducts
 
             try
             {
-                using (System.Transactions.TransactionScope Transaction = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required, TimeSpan.FromMinutes(30), System.Transactions.TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    var products = await _productRepository.GetAllAsync();
-                    var entities = products.ToList();
-                    response.Result = _mapper.Map<List<ProductResponse>>(entities);
-                    Transaction.Complete();
-                }
+                var products = await _productRepository.GetAllAsync();
+                var entities = products.ToList();
+                response.Result = _mapper.Map<List<ProductResponse>>(entities);
 
                 response.Durum = true;
-                response.Mesaj = MesajConstats.EklemeMesaji;
+                response.Mesaj = MesajConstats.GetAllMesajı;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;
             }
 

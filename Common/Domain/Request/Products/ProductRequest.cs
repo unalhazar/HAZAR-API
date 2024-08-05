@@ -1,4 +1,7 @@
-﻿namespace Domain.Request.Products
+﻿using Domain.Request.Brands;
+using Domain.Request.Category;
+
+namespace Domain.Request.Products
 {
     public class ProductRequest
     {
@@ -8,8 +11,8 @@
         public int Stock { get; set; }
         public string? ImageUrl { get; set; }
         public long CategoryId { get; set; }
-        public Category Category { get; set; }
+        public CategoryRequest Category { get; set; }
         public long? BrandId { get; set; }
-        public Brand? Brand { get; set; }
+        public BrandRequest? Brand { get; set; }
     }
 }

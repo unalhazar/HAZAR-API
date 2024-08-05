@@ -7,5 +7,6 @@
         public static string EklemeMesaji = "Ekleme işlemi başarılı şekilde tamamlanmıştır.";
         public static string HataMesaji = "İşlem sırasında bir hata oluştu. İşleminiz tamamlanmamıştır.";
         public static string AktifMesaji = "Aktif etme işlemi başarılı şekilde tamamlanmıştır.";
+        public static string GetAllMesajı = "Bilgiler getirildi.";
     }
 }
