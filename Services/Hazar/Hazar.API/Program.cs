@@ -1,8 +1,8 @@
+using Application.DependencyInjection;
 using Hazar.API.DependencyInjection;
 using Hazar.API.Middleware;
 using Infrastructure.DependencyInjection;
 using Microsoft.OpenApi.Models;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +39,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.ApplicationServices();
 builder.Services.InfrastructureServices(builder.Configuration);
 builder.Services.HazarAPIServices(builder.Configuration);
 

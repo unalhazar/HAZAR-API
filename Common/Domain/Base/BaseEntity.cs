@@ -2,12 +2,12 @@
 
 namespace Domain.Base
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         [Key]
         public long Id { get; set; }
 
-        public bool? State { get; set; }
+        public int? State { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 

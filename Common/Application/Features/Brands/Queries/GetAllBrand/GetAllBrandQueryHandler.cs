@@ -19,16 +19,13 @@ namespace Application.Features.Brands.Queries.GetAllBrand
 
             try
             {
-                using (System.Transactions.TransactionScope Transaction = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required, TimeSpan.FromMinutes(30), System.Transactions.TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    var brands = await _brandRepository.GetAllAsync();
-                    var entities = brands.ToList();
-                    response.Result = _mapper.Map<List<BrandResponse>>(entities);
-                    Transaction.Complete();
-                }
+
+                var brands = await _brandRepository.GetAllAsync();
+                var entities = brands.ToList();
+                response.Result = _mapper.Map<List<BrandResponse>>(entities);
 
                 response.Durum = true;
-                response.Mesaj = MesajConstats.EklemeMesaji;
+                response.Mesaj = "Listeleme İşlemi başarıyla tamamlandı.";
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;
             }
 

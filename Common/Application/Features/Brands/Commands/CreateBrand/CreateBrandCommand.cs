@@ -5,7 +5,6 @@ namespace Application.Features.Brands.Commands.CreateBrand
 {
     public class CreateBrandCommand : BrandRequest, IRequest<ProcessResult<BrandResponse>>
     {
-
     }
 }
 

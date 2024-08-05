@@ -4,6 +4,8 @@
     {
         public HazarDbContext(DbContextOptions<HazarDbContext> options) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         }
 
         public virtual DbSet<ApplicationUser> Users { get; set; }
@@ -28,6 +30,11 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Brand>().ToTable("brands");
+            modelBuilder.Entity<Category>().ToTable("categories");
+            modelBuilder.Entity<Product>().ToTable("products");
+
 
             // Product - Brand relationship
             modelBuilder.Entity<Product>()

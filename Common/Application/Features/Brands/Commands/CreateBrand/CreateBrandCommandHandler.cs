@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Persistence;
+using Domain;
 using Domain.Response.Brands;
 
 namespace Application.Features.Brands.Commands.CreateBrand
@@ -22,6 +23,8 @@ namespace Application.Features.Brands.Commands.CreateBrand
             {
 
                 var entity = mapper.Map<Brand>(request);
+                entity.State = (int)State.Aktif;
+                entity.CreatedDate = DateTime.UtcNow;
                 await brandRepository.AddAsync(entity);
                 response.Result = mapper.Map<BrandResponse>(entity);
 

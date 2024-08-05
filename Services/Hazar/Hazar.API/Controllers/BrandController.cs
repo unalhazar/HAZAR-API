@@ -3,7 +3,6 @@ using Application.Features.Brands.Commands.DeleteBrand;
 using Application.Features.Brands.Commands.UpdateBrand;
 using Application.Features.Brands.Queries.GetAllBrand;
 using Application.Features.Brands.Queries.GetByIdBrand;
-using Domain.Response.Brands;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -20,39 +19,38 @@ namespace Hazar.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProcessResult<List<BrandResponse>>>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var query = new GetAllBrandQuery();
-            return await mediator.Send(query);
+            var result = await mediator.Send(new GetAllBrandQuery());
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProcessResult<BrandResponse>>> GetById(long id)
+        public async Task<IActionResult> GetById(long id)
         {
-            var query = new GetByIdBrandQuery { Id = id };
-            return await mediator.Send(query);
+            var result = await mediator.Send(new GetByIdBrandQuery { Id = id });
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProcessResult<BrandResponse>>> Create([FromBody] CreateBrandCommand cmd)
+        public async Task<IActionResult> Create([FromBody] CreateBrandCommand cmd)
         {
             var result = await mediator.Send(cmd);
-            return result;
+            return Ok(result);
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProcessResult<BrandResponse>>> Update([FromBody] UpdateBrandCommand cmd)
+        public async Task<IActionResult> Update([FromBody] UpdateBrandCommand cmd)
         {
             var result = await mediator.Send(cmd);
-            return result;
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ProcessResult<BrandResponse>>> Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var cmd = new DeleteBrandCommand { Id = id };
-            var result = await mediator.Send(cmd);
-            return result;
+            var result = await mediator.Send(new DeleteBrandCommand { Id = id });
+            return Ok(result);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Application.Features.Brands.Queries.GetByIdBrand
     {
         public GetByIdBrandQueryValidator()
         {
-            RuleFor(c => c.Id).NotEmpty();
+            RuleFor(c => c.Name).NotEmpty();
         }
     }
 }

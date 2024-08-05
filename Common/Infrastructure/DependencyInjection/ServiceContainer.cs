@@ -15,7 +15,7 @@ namespace Infrastructure.DependencyInjection
         public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<HazarDbContext>(
-                options => options.UseSqlite(configuration.GetConnectionString("Default"),
+                options => options.UseNpgsql(configuration.GetConnectionString("Default"),
                 b => b.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)),
                 ServiceLifetime.Scoped);
 
@@ -36,6 +36,11 @@ namespace Infrastructure.DependencyInjection
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
                 };
             });
+
+
+
+
+
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();

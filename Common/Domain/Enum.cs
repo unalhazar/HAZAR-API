@@ -16,4 +16,10 @@
         Register,
         None
     }
+    public enum State
+    {
+        Aktif = 1,
+        Pasif,
+        None
+    }
 }

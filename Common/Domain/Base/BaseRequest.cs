@@ -1,6 +1,6 @@
 ﻿namespace Domain.Base
 {
-    public class BaseRequest
+    public abstract class BaseRequest
     {
         public BaseRequest()
         {

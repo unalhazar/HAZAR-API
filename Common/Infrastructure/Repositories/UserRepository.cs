@@ -135,7 +135,7 @@ namespace Infrastructure.Repositories
                 Email = registerUserRequest.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(registerUserRequest.Password),
                 CreatedDate = DateTime.UtcNow,
-                State = true,
+                State = 1,
                 Role = UserRoles.User,
             });
 
