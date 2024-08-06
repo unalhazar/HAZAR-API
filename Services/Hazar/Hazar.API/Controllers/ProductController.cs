@@ -42,6 +42,10 @@ namespace Hazar.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var result = await _mediator.Send(request);
             return Ok(result);
         }

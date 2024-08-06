@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
             bool checkPassword = BCrypt.Net.BCrypt.Verify(loginRequest.Password, getUser.Password);
             if (checkPassword)
             {
-                _loggingService.Log("User logged in.", operation: Operation.Login.ToString(), loginRequest.Email, logLevel: Domain.LogLevel.Information);
+                _loggingService.Log("User logged in.", operation: Operation.Login.ToString(), loginRequest.Email, logLevel: LogLevel.Information);
                 var jwtToken = GenerateJWTToken(getUser);
                 var refreshToken = GenerateRefreshToken(getUser);
                 return new LoginResponse(true, "Login successful", jwtToken, refreshToken.Token);

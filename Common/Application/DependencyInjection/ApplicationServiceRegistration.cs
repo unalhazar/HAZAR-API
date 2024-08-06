@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace Application.DependencyInjection
@@ -12,6 +13,11 @@ namespace Application.DependencyInjection
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             });
+
+            // FluentValidation setup
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
 
             return services;
         }

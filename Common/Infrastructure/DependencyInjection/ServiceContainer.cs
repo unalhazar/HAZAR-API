@@ -38,9 +38,11 @@ namespace Infrastructure.DependencyInjection
             });
 
 
+            // Logging service'i ekleyin
+            services.AddScoped<ILoggingService, LoggingService>();
+            services.AddScoped<ILoggingRepository, LoggingRepository>();
 
-
-
+            // Repository'i ekleyin
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ILoggingRepository, LoggingRepository>();
