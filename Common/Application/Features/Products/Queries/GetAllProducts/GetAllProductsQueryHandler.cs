@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Domain.Response.Products;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Products.Queries.GetAllProducts
 {
@@ -20,11 +21,27 @@ namespace Application.Features.Products.Queries.GetAllProducts
 
             try
             {
-                var products = _productRepository.GetListByIncludes(
-                includes: q => q.Include(p => p.Category).Include(p => p.Brand));
+                // Arama terimini kullanarak filtre oluşturma
+                Expression<Func<Product, bool>> filter = null;
+                if (!string.IsNullOrEmpty(request.SearchTerm))
+                {
+                    filter = p => p.Name.Contains(request.SearchTerm);
+                }
 
-                var entities = products.ToList();
-                response.Result = _mapper.Map<List<ProductResponse>>(entities);
+
+                var productsQuery = _productRepository.GetListByIncludes(
+                    filter: filter,
+                    includes: q => q
+                    .Include(p => p.Category)
+                    .Include(p => p.Brand));
+
+                var totalCount = await productsQuery.CountAsync();
+                var pagedProducts = await productsQuery
+                    .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToListAsync();
+
+                response.Result = _mapper.Map<List<ProductResponse>>(pagedProducts.ToList());
 
                 response.Durum = true;
                 response.Mesaj = MesajConstats.GetAllMesajı;

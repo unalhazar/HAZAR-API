@@ -19,9 +19,15 @@ namespace Hazar.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] string searchTerm = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetAllProductsQuery());
+            var query = new GetAllProductsQuery
+            {
+                SearchTerm = searchTerm,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
 

@@ -1,6 +1,5 @@
-﻿using Application.Contracts.Extensions;
+﻿using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Linq.Expressions;
 
 namespace Application.Contracts.Persistence
 {
@@ -44,7 +43,7 @@ namespace Application.Contracts.Persistence
         Task BulkRemoveAsync(List<T> entities);
         Task<IDbContextTransaction> BeginTransaction();
 
-        List<T> GetListByIncludes(Expression<Func<T, bool>> filter = null, Func<IIncludable<T>, IIncludable> includes = null);
+        IQueryable<T> GetListByIncludes(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
         T GetByIncludes(Expression<Func<T, bool>> filter = null, Func<IIncludable<T>, IIncludable> includes = null);
 
     }

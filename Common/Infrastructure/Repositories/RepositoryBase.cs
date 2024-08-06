@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Extensions;
 using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage;
 namespace Infrastructure.Repositories
 {
@@ -154,18 +155,25 @@ namespace Infrastructure.Repositories
             return await _dbContext.Database.BeginTransactionAsync();
         }
 
-        public List<T> GetListByIncludes(Expression<Func<T, bool>> filter = null, Func<IIncludable<T>, IIncludable> includes = null)
+        public IQueryable<T> GetListByIncludes(
+        Expression<Func<T, bool>> filter = null,
+        Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
-            var query = _dbContext.Set<T>().AsQueryable();
+            IQueryable<T> query = _dbContext.Set<T>();
 
             if (filter != null)
+            {
                 query = query.Where(filter);
+            }
 
             if (includes != null)
-                query = query.IncludeMultiple(includes);
+            {
+                query = includes(query);
+            }
 
-            return query.ToList();
+            return query;
         }
+
 
         public T GetByIncludes(Expression<Func<T, bool>> filter = null, Func<IIncludable<T>, IIncludable> includes = null)
         {
