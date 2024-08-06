@@ -32,6 +32,7 @@ namespace Application.Features.Products.Commands.Create
                     response.HttpStatusCode = checkResult.HttpStatusCode;
                     return response;
                 }
+
                 var product = _mapper.Map<Product>(request);
                 var addedProduct = await _productRepository.AddAsync(product);
 
