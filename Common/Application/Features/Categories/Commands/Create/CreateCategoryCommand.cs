@@ -1,6 +1,9 @@
-﻿namespace Application.Features.Categories.Commands.Create
+﻿using Domain.Request.Category;
+using Domain.Response.Categories;
+
+namespace Application.Features.Categories.Commands.Create
 {
-    public class CreateCategoryCommand
+    public class CreateCategoryCommand : CategoryRequest, IRequest<ProcessResult<CategoryResponse>>
     {
     }
 }

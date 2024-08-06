@@ -2,8 +2,6 @@
 {
     public abstract class BaseRequest
     {
-        public BaseRequest()
-        {
-        }
+        public long Id { get; set; }
     }
 }

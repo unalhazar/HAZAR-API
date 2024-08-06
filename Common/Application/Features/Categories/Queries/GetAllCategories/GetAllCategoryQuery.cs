@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Response.Categories;
 
 namespace Application.Features.Categories.Queries.GetAllCategories
 {
-    internal class GetAllCategoryQuery
+    public class GetAllCategoryQuery : IRequest<ProcessResult<List<CategoryResponse>>>
     {
     }
 }

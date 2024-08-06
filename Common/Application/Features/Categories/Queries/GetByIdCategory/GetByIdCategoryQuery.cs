@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Response.Categories;
 
 namespace Application.Features.Categories.Queries.GetByIdCategory
 {
-    internal class GetByIdCategoryQuery
+    public class GetByIdCategoryQuery : IRequest<ProcessResult<CategoryResponse>>
     {
+        public long Id { get; set; }
     }
 }
