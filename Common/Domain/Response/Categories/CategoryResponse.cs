@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
 
-        public List<Domain.Entities.Product> Products { get; set; } = new List<Domain.Entities.Product>();
+        public List<Product?> Products { get; set; } = new List<Product?>();
     }
 }

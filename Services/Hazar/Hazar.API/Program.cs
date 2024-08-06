@@ -39,6 +39,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.ApplicationServices();
 builder.Services.InfrastructureServices(builder.Configuration);
 builder.Services.HazarAPIServices(builder.Configuration);

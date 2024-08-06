@@ -36,19 +36,19 @@
             modelBuilder.Entity<Product>().ToTable("products");
 
 
-            // Product - Brand relationship
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Brand)
-                .WithMany(b => b.Products)
-                .HasForeignKey(p => p.BrandId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //// Product - Brand relationship
+            //modelBuilder.Entity<Product>()
+            //    .HasOne(p => p.Brand)
+            //    .WithMany(b => b.Products)
+            //    .HasForeignKey(p => p.BrandId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            // Product - Category relationship
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
-                .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //// Product - Category relationship
+            //modelBuilder.Entity<Product>()
+            //    .HasOne(p => p.Category)
+            //    .WithMany(c => c.Products)
+            //    .HasForeignKey(p => p.CategoryId)
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

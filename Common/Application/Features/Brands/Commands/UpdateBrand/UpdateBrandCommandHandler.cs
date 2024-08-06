@@ -19,7 +19,11 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             try
             {
                 var entity = mapper.Map<Brand>(request);
+                entity.UpdatedDate = DateTime.UtcNow;
                 await brandRepository.UpdateAsync(entity);
+
+
+
                 response.Result = mapper.Map<BrandResponse>(entity);
 
 

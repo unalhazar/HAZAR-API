@@ -19,6 +19,7 @@ namespace Application.Features.Categories.Commands.Update
             try
             {
                 var entity = mapper.Map<Category>(request);
+                entity.UpdatedDate = DateTime.Now;
                 await brandRepository.UpdateAsync(entity);
                 response.Result = mapper.Map<CategoryResponse>(entity);
 

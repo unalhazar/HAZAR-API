@@ -24,7 +24,7 @@ namespace Application.Features.Brands.Queries.GetByIdBrand
 
 
                 response.Durum = true;
-                response.Mesaj = MesajConstats.EklemeMesaji;
+                response.Mesaj = MesajConstats.Success;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;
             }
             catch (Exception)

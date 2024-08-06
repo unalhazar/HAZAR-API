@@ -5,11 +5,11 @@ namespace Application.Features.Categories.Queries.GetAllCategories
 {
     public class GetAllCategoryQueryHandler : IRequestHandler<GetAllCategoryQuery, ProcessResult<List<CategoryResponse>>>
     {
-        private readonly ICategoryRepository _brandRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
-        public GetAllCategoryQueryHandler(ICategoryRepository brandRepository, IMapper mapper)
+        public GetAllCategoryQueryHandler(ICategoryRepository categoryRepository, IMapper mapper)
         {
-            _brandRepository = brandRepository;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
 
@@ -20,8 +20,8 @@ namespace Application.Features.Categories.Queries.GetAllCategories
             try
             {
 
-                var brands = await _brandRepository.GetAllAsync();
-                var entities = brands.ToList();
+                var categories = await _categoryRepository.GetAllAsync();
+                var entities = categories.ToList();
                 response.Result = _mapper.Map<List<CategoryResponse>>(entities);
 
                 response.Durum = true;

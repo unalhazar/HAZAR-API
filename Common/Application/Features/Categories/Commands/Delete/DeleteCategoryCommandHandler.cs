@@ -1,6 +1,8 @@
 ﻿using Application.Contracts.Persistence;
+using Application.Helpers;
 using Domain;
 using Domain.Response.Categories;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Categories.Commands.Delete
 {
@@ -8,11 +10,13 @@ namespace Application.Features.Categories.Commands.Delete
     {
         private readonly ICategoryRepository brandRepository;
         private readonly IMapper mapper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public DeleteCategoryCommandHandler(ICategoryRepository brandRepository, IMapper mapper)
+        public DeleteCategoryCommandHandler(ICategoryRepository brandRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.brandRepository = brandRepository;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ProcessResult<CategoryResponse>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
@@ -20,6 +24,14 @@ namespace Application.Features.Categories.Commands.Delete
             ProcessResult<CategoryResponse> response = new ProcessResult<CategoryResponse>();
             try
             {
+                var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var userId = JwtHelper.GetUserIdFromToken(token);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new Exception("User ID not found in token.");
+                }
+
                 var entity = await brandRepository.GetByIdAsync(request.Id);
                 if (entity == null)
                 {
@@ -30,7 +42,7 @@ namespace Application.Features.Categories.Commands.Delete
                 }
                 entity.DeletedDate = DateTime.UtcNow;
                 entity.State = (int)State.Pasif;
-
+                entity.DeletedUserId = long.Parse(userId);
                 await brandRepository.UpdateAsync(entity);
                 response.Result = mapper.Map<CategoryResponse>(entity);
 
