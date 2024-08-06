@@ -12,8 +12,8 @@ namespace Domain.Response.Products
         public int Stock { get; set; }
         public string ImageUrl { get; set; }
         public long CategoryId { get; set; }
-        public Category Category { get; set; }
+        public string CategoryName { get; set; }
         public long BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public string BrandName { get; set; }
     }
 }

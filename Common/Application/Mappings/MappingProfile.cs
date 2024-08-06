@@ -1,6 +1,6 @@
-﻿using Application.Features.Brands.Commands.CreateBrand;
-using Application.Features.Brands.Commands.DeleteBrand;
-using Application.Features.Brands.Commands.UpdateBrand;
+﻿using Application.Features.Brands.Commands.Create;
+using Application.Features.Brands.Commands.Delete;
+using Application.Features.Brands.Commands.Update;
 using Application.Features.Categories.Commands.Create;
 using Application.Features.Categories.Commands.Update;
 using Domain.Request.Brands;
@@ -23,6 +23,12 @@ namespace Application.Mappings
             CreateMap<Product, ProductResponse>().ReverseMap();
             CreateMap<Category, CategoryResponse>().ReverseMap();
             CreateMap<Category, UpdateCategoryCommand>().ReverseMap();
+
+            CreateMap<Product, ProductResponse>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name));
+
+
         }
     }
 }

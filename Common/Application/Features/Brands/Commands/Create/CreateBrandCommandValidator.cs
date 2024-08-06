@@ -1,5 +1,5 @@
 ﻿using Domain.Request.Brands;
-namespace Application.Features.Brands.Commands.CreateBrand
+namespace Application.Features.Brands.Commands.Create
 {
     public class CreateBrandCommandValidator : AbstractValidator<BrandRequest>
     {

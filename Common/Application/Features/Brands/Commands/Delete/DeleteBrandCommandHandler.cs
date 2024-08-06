@@ -1,18 +1,23 @@
 ﻿using Application.Contracts.Persistence;
+using Application.Helpers;
 using Domain;
 using Domain.Response.Brands;
+using Microsoft.AspNetCore.Http;
 
-namespace Application.Features.Brands.Commands.DeleteBrand
+namespace Application.Features.Brands.Commands.Delete
 {
     public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, ProcessResult<BrandResponse>>
     {
         private readonly IBrandRepository brandRepository;
         private readonly IMapper mapper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public DeleteBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper)
+
+        public DeleteBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.brandRepository = brandRepository;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ProcessResult<BrandResponse>> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
@@ -20,6 +25,13 @@ namespace Application.Features.Brands.Commands.DeleteBrand
             ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
             try
             {
+                var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var userId = JwtHelper.GetUserIdFromToken(token);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new Exception("User ID not found in token.");
+                }
                 var entity = await brandRepository.GetByIdAsync(request.Id);
                 if (entity == null)
                 {

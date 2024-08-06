@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Brands.Commands.DeleteBrand
+﻿namespace Application.Features.Brands.Commands.Delete
 {
     public class DeleteBrandCommandValidator : AbstractValidator<Brand>
     {

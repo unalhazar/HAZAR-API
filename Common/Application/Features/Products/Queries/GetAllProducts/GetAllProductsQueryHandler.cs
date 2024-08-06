@@ -20,7 +20,9 @@ namespace Application.Features.Products.Queries.GetAllProducts
 
             try
             {
-                var products = await _productRepository.GetAllAsync();
+                var products = _productRepository.GetListByIncludes(
+                includes: q => q.Include(p => p.Category).Include(p => p.Brand));
+
                 var entities = products.ToList();
                 response.Result = _mapper.Map<List<ProductResponse>>(entities);
 

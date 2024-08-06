@@ -1,6 +1,6 @@
-﻿using Application.Features.Brands.Commands.CreateBrand;
-using Application.Features.Brands.Commands.DeleteBrand;
-using Application.Features.Brands.Commands.UpdateBrand;
+﻿using Application.Features.Brands.Commands.Create;
+using Application.Features.Brands.Commands.Delete;
+using Application.Features.Brands.Commands.Update;
 using Application.Features.Brands.Queries.GetAllBrand;
 using Application.Features.Brands.Queries.GetByIdBrand;
 using Microsoft.AspNetCore.Mvc;
