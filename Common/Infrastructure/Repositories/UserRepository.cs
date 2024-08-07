@@ -2,7 +2,7 @@
 using Domain;
 using Domain.Request.Users;
 using Domain.Response.Users;
-using Infrastructure.AppServices.LogService;
+using Infrastructure.AppServices.LogService.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,10 +15,10 @@ namespace Infrastructure.Repositories
     {
         private readonly HazarDbContext _dbContext;
         private readonly IConfiguration _configuration;
-        private readonly ILoggingService _loggingService;
+        private readonly ILogUserService _loggingService;
         private readonly IApplicationUserRepository _applicationUserRepository;
         private readonly ITokenBlacklistService _tokenBlacklistService;
-        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, ILoggingService loggingService, IApplicationUserRepository applicationUserRepository, ITokenBlacklistService tokenBlacklistService)
+        public UserRepository(HazarDbContext hazarDbContext, IConfiguration configuration, ILogUserService loggingService, IApplicationUserRepository applicationUserRepository, ITokenBlacklistService tokenBlacklistService)
         {
             _dbContext = hazarDbContext;
             _configuration = configuration;
@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
             bool checkPassword = BCrypt.Net.BCrypt.Verify(loginRequest.Password, getUser.Password);
             if (checkPassword)
             {
-                _loggingService.Log("User logged in.", operation: Operation.Login.ToString(), loginRequest.Email, logLevel: LogLevel.Information);
+                _loggingService.LogUser("User logged in.", operation: Operation.Login.ToString(), loginRequest.Email, logLevel: LogUserLevel.Information);
                 var jwtToken = GenerateJWTToken(getUser);
                 var refreshToken = GenerateRefreshToken(getUser);
                 return new LoginResponse(true, "Login successful", jwtToken, refreshToken.Token);
@@ -141,11 +141,11 @@ namespace Infrastructure.Repositories
 
             if (result == null)
             {
-                _loggingService.Log("New user registered Fail.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
+                _loggingService.LogUser("New user registered Fail.", "Register", registerUserRequest.Email, logLevel: LogUserLevel.Information);
                 return new RegistrationResponse(true, "Registration failed");
             }
 
-            _loggingService.Log("New user registered.", "Register", registerUserRequest.Email, logLevel: Domain.LogLevel.Information);
+            _loggingService.LogUser("New user registered.", "Register", registerUserRequest.Email, logLevel: LogUserLevel.Information);
             return new RegistrationResponse(true, "Registration completed");
 
         }

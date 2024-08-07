@@ -4,9 +4,6 @@
     {
         public static IServiceCollection HazarAPIServices(this IServiceCollection services, IConfiguration configuration)
         {
-
-            // Diğer servis kayıtları
-
             return services;
         }
     }

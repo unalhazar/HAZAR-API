@@ -48,6 +48,7 @@ builder.Services.HazarAPIServices(builder.Configuration);
 var app = builder.Build();
 
 app.UseMiddleware<TokenBlacklistMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

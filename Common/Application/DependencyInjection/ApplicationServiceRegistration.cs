@@ -1,4 +1,5 @@
-﻿using FluentValidation.AspNetCore;
+﻿using Application.Features.Products.Rules;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -18,6 +19,7 @@ namespace Application.DependencyInjection
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
+            services.AddTransient<ProductRules>();
 
             return services;
         }

@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    public enum LogLevel
+    public enum LogUserLevel
     {
         Trace,
         Debug,
@@ -10,6 +10,7 @@
         Critical,
         None
     }
+
     public enum Operation
     {
         Login = 1,

@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
-using Infrastructure.AppServices.LogService;
+using Infrastructure.AppServices.LogService.GlobalException;
+using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.TokenBlacklistService;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,17 +40,18 @@ namespace Infrastructure.DependencyInjection
 
 
             // Logging service'i ekleyin
-            services.AddScoped<ILoggingService, LoggingService>();
-            services.AddScoped<ILoggingRepository, LoggingRepository>();
+            services.AddScoped<ILogUserService, LogUserService>();
+            services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
+
 
             // Repository'i ekleyin
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
-            services.AddScoped<ILoggingRepository, LoggingRepository>();
+            services.AddScoped<ILogUserRepository, LogUserRepository>();
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ILoggingService, LoggingService>();
+            services.AddScoped<IGlobalLoggingRepository, GlobalLoggingRepository>();
             services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
             // Diğer servis kayıtları
 
