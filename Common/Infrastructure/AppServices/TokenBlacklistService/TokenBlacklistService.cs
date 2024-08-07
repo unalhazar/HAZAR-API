@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.AppServices.TokenBlacklistService
+﻿using Application.Abstraction;
+
+namespace Infrastructure.AppServices.TokenBlacklistService
 {
     public class TokenBlacklistService : ITokenBlacklistService
     {

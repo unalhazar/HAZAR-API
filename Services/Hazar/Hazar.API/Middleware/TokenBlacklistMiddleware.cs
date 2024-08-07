@@ -1,4 +1,4 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Abstraction;
 
 namespace Hazar.API.Middleware
 {

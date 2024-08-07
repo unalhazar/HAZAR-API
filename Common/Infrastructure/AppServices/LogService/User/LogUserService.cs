@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Abstraction;
+using Domain;
 
 namespace Infrastructure.AppServices.LogService.User
 {

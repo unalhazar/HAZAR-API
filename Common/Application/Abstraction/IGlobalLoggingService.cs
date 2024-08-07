@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.AppServices.LogService.GlobalException
+namespace Application.Abstraction
 {
     public interface IGlobalLoggingService
     {

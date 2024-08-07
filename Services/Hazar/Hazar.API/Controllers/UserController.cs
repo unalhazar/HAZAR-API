@@ -1,4 +1,4 @@
-﻿using Application.Contracts;
+﻿using Application.Abstraction;
 using Domain.Request.Users;
 using Domain.Response.Users;
 using Microsoft.AspNetCore.Authorization;

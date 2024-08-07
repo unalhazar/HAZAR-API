@@ -1,4 +1,4 @@
-﻿using Infrastructure.AppServices.LogService.GlobalException;
+﻿using Application.Abstraction;
 using Newtonsoft.Json;
 using System.Net;
 

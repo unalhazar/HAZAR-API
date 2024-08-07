@@ -1,4 +1,4 @@
-﻿namespace Application.Contracts.Persistence
+﻿namespace Application.Abstraction
 {
     public interface ITokenBlacklistService
     {

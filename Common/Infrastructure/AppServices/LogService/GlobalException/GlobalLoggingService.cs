@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Application.Abstraction;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.AppServices.LogService.GlobalException
 {

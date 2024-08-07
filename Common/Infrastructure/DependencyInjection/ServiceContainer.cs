@@ -1,4 +1,5 @@
-﻿using Application.Contracts;
+﻿using Application.Abstraction;
+using Infrastructure.AppServices.CacheService;
 using Infrastructure.AppServices.LogService.GlobalException;
 using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.TokenBlacklistService;
@@ -43,6 +44,8 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<ILogUserService, LogUserService>();
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
 
+            //Cache Service
+            services.AddScoped<ICacheService, CacheService>();
 
             // Repository'i ekleyin
             services.AddScoped<IUser, UserRepository>();

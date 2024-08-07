@@ -1,7 +1,7 @@
 ﻿using Domain.Request.Users;
 using Domain.Response.Users;
 
-namespace Application.Contracts
+namespace Application.Abstraction
 {
     public interface IUser
     {
