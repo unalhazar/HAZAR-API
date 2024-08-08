@@ -5,6 +5,7 @@ using Application.Features.Products.Commands.Import;
 using Application.Features.Products.Commands.Update;
 using Application.Features.Products.Queries.GetAllProducts;
 using Application.Features.Products.Queries.GetById;
+using Infrastructure.AppServices.EmailService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -15,11 +16,13 @@ namespace Hazar.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IProductService _productService;
+        private readonly EmailService _emailService;
 
-        public ProductController(IMediator mediator, IProductService productService)
+        public ProductController(IMediator mediator, IProductService productService, EmailService emailService)
         {
             _mediator = mediator;
             _productService = productService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -34,6 +37,14 @@ namespace Hazar.API.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpPost("send-email")]
+        public async Task<IActionResult> SendEmail()
+        {
+            await _emailService.SendEmailAsync("aaa@gmail.com", "Test", "Bu bir test mesajıdır");
+            return Ok("Email sent successfully!");
+        }
+
 
         [HttpPost("import")]
         [Consumes("multipart/form-data")]

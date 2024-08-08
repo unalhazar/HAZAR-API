@@ -1,6 +1,7 @@
 ﻿using Application.Abstraction;
 using Infrastructure.AppServices.Background;
 using Infrastructure.AppServices.CacheService;
+using Infrastructure.AppServices.EmailService;
 using Infrastructure.AppServices.LogService.GlobalException;
 using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
@@ -42,6 +43,14 @@ namespace Infrastructure.DependencyInjection
                 };
             });
 
+
+            //Email Service
+            services.AddScoped<EmailService>(sp => new EmailService(
+                configuration["Email:SmtpServer"],
+                int.Parse(configuration["Email:SmtpPort"]),
+                configuration["Email:SmtpUser"],
+                configuration["Email:SmtpPass"]
+            ));
 
             // Logging service'i ekleyin
             services.AddScoped<ILogUserService, LogUserService>();
