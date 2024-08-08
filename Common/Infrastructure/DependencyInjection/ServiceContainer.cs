@@ -2,6 +2,7 @@
 using Infrastructure.AppServices.CacheService;
 using Infrastructure.AppServices.LogService.GlobalException;
 using Infrastructure.AppServices.LogService.User;
+using Infrastructure.AppServices.ProductService;
 using Infrastructure.AppServices.TokenBlacklistService;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,6 +47,7 @@ namespace Infrastructure.DependencyInjection
 
             //Cache Service
             services.AddScoped<ICacheService, CacheService>();
+            services.AddScoped<IProductService, ProductService>();
 
             // Repository'i ekleyin
             services.AddScoped<IUser, UserRepository>();

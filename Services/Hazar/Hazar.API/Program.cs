@@ -3,9 +3,11 @@ using Hazar.API.DependencyInjection;
 using Hazar.API.Middleware;
 using Infrastructure.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
-
+// EPPlus lisans konteksini ayarlayýn
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 // Add services to the container.
 
 builder.Services.AddControllers();

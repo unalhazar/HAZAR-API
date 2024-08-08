@@ -1,5 +1,7 @@
-﻿using Application.Features.Products.Commands.Create;
+﻿using Application.Abstraction;
+using Application.Features.Products.Commands.Create;
 using Application.Features.Products.Commands.Delete;
+using Application.Features.Products.Commands.Import;
 using Application.Features.Products.Commands.Update;
 using Application.Features.Products.Queries.GetAllProducts;
 using Application.Features.Products.Queries.GetById;
@@ -12,10 +14,12 @@ namespace Hazar.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IProductService _productService;
 
-        public ProductController(IMediator mediator)
+        public ProductController(IMediator mediator, IProductService productService)
         {
             _mediator = mediator;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -30,6 +34,34 @@ namespace Hazar.API.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+
+        [HttpPost("import")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ImportProducts(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            // Save the file temporarily
+            var filePath = Path.Combine(Path.GetTempPath(), file.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Execute the command
+            var command = new ImportProductsCommand { FilePath = filePath };
+            await _mediator.Send(command);
+
+            // Optionally delete the file after processing
+            System.IO.File.Delete(filePath);
+
+            return Ok("File imported successfully.");
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(long id)

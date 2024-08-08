@@ -117,9 +117,12 @@ namespace Infrastructure.Repositories
         }
         public async Task BulkAddAsync(List<T> entities)
         {
+            if (entities == null || !entities.Any())
+            {
+                return; // Boş veri kümesi işlemi atla
+            }
+            await _dbContext.BulkInsertAsync(entities);
 
-            _dbContext.Set<T>().AddRange(entities);
-            await _dbContext.SaveChangesAsync();
         }
         public async Task BulkUpdateAsync(List<T> entities)
         {
