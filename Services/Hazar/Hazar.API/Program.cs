@@ -2,6 +2,7 @@ using Application.DependencyInjection;
 using Hazar.API.DependencyInjection;
 using Hazar.API.Middleware;
 using Infrastructure.DependencyInjection;
+using Infrastructure.SignalR;
 using Microsoft.OpenApi.Models;
 using OfficeOpenXml;
 
@@ -55,6 +56,8 @@ builder.Services.ApplicationServices();
 builder.Services.InfrastructureServices(builder.Configuration);
 builder.Services.HazarAPIServices(builder.Configuration);
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 app.UseMiddleware<TokenBlacklistMiddleware>();
@@ -72,5 +75,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<NotificationHub>("/notificationHub");
 app.Run();

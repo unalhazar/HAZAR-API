@@ -1,7 +1,9 @@
 ﻿using Application.Abstraction;
+using Infrastructure.AppServices.Background;
 using Infrastructure.AppServices.CacheService;
 using Infrastructure.AppServices.LogService.GlobalException;
 using Infrastructure.AppServices.LogService.User;
+using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
 using Infrastructure.AppServices.TokenBlacklistService;
 using Infrastructure.Repositories;
@@ -44,6 +46,13 @@ namespace Infrastructure.DependencyInjection
             // Logging service'i ekleyin
             services.AddScoped<ILogUserService, LogUserService>();
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
+
+            //Background Service
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddHostedService<PeriodicTaskService>();
+
+            // SignalR
+            services.AddSignalR();
 
             //Cache Service
             services.AddScoped<ICacheService, CacheService>();

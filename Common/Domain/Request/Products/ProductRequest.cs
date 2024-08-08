@@ -1,9 +1,6 @@
-﻿using Domain.Request.Brands;
-using Domain.Request.Category;
-
-namespace Domain.Request.Products
+﻿namespace Domain.Request.Products
 {
-    public class ProductRequest
+    public class ProductRequest : BaseRequest
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -11,8 +8,6 @@ namespace Domain.Request.Products
         public int Stock { get; set; }
         public string? ImageUrl { get; set; }
         public long CategoryId { get; set; }
-        public CategoryRequest Category { get; set; }
-        public long? BrandId { get; set; }
-        public BrandRequest? Brand { get; set; }
+        public long BrandId { get; set; }
     }
 }

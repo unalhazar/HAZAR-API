@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Application.Features.Products.Rules;
+using Domain.Events;
 using Domain.Response.Products;
 
 namespace Application.Features.Products.Commands.Create
@@ -9,12 +10,14 @@ namespace Application.Features.Products.Commands.Create
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly ProductRules _productRules;
+        private readonly IMediator _mediator;
 
-        public CreateProductCommandHandler(IProductRepository productRepository, IMapper mapper, ProductRules productRules)
+        public CreateProductCommandHandler(IProductRepository productRepository, IMapper mapper, ProductRules productRules, IMediator mediator)
         {
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _productRules = productRules;
+            _mediator = mediator;
         }
 
         public async Task<ProcessResult<ProductResponse>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -35,6 +38,8 @@ namespace Application.Features.Products.Commands.Create
 
                 var product = _mapper.Map<Product>(request);
                 var addedProduct = await _productRepository.AddAsync(product);
+
+                await _mediator.Publish(new ProductCreatedEvent(product.Id, product.Name), cancellationToken);
 
                 response.Result = _mapper.Map<ProductResponse>(addedProduct);
                 response.Durum = true;
