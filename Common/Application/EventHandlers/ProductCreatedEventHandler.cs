@@ -1,5 +1,4 @@
 ﻿using Application.Abstraction;
-using Domain.Events;
 
 namespace Application.EventHandlers
 {

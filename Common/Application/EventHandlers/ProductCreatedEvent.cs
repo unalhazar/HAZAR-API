@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Domain.Events
+﻿namespace Application.EventHandlers
 {
     public class ProductCreatedEvent : INotification
     {

@@ -1,6 +1,6 @@
 ﻿using Application.Contracts.Persistence;
+using Application.EventHandlers;
 using Application.Features.Products.Rules;
-using Domain.Events;
 using Domain.Response.Products;
 
 namespace Application.Features.Products.Commands.Create
