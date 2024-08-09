@@ -7,6 +7,9 @@ using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
 using Infrastructure.AppServices.TokenBlacklistService;
+using Infrastructure.OutSourceServices.GraphQL;
+using Infrastructure.OutSourceServices.REST;
+using Infrastructure.OutSourceServices.SOAP;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +46,12 @@ namespace Infrastructure.DependencyInjection
                 };
             });
 
+
+
+            //OutSource Service
+            services.AddHttpClient<JsonPlaceHolderGetUserService>();
+            services.AddHttpClient<SpacexRocketService>();
+            services.AddHttpClient<WebserviceXGetWeatherService>();
 
             //Email Service
             services.AddScoped<EmailService>(sp => new EmailService(
