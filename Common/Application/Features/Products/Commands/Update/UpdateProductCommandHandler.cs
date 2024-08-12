@@ -1,4 +1,6 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Abstraction;
+using Application.Contracts.Persistence;
+using Application.Features.Products.Rules;
 using Domain.Response.Products;
 
 namespace Application.Features.Products.Commands.Update
@@ -7,10 +9,14 @@ namespace Application.Features.Products.Commands.Update
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public UpdateProductCommandHandler(IMapper mapper, IProductRepository productRepository)
+        private readonly ICacheService _cacheService;
+        private readonly ProductRules _productRules;
+        public UpdateProductCommandHandler(IMapper mapper, IProductRepository productRepository, ICacheService cacheService, ProductRules productRules)
         {
             _mapper = mapper;
             _productRepository = productRepository;
+            _cacheService = cacheService;
+            _productRules = productRules;
         }
 
         public async Task<ProcessResult<ProductResponse>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -19,8 +25,19 @@ namespace Application.Features.Products.Commands.Update
 
             try
             {
+                // Ürün isminin benzersiz olup olmadığını kontrol edin
+                var checkResult = await _productRules.CheckIfProductNameIsUniqueAsync(request.Name);
+                if (!checkResult.Durum)
+                {
+                    response.Durum = checkResult.Durum;
+                    response.Mesaj = checkResult.Mesaj;
+                    response.HttpStatusCode = checkResult.HttpStatusCode;
+                    return response;
+                }
                 var product = _mapper.Map<Product>(request);
                 await _productRepository.UpdateAsync(product);
+                // Ürün güncellendikten sonra cache temizle
+                await _cacheService.ClearCacheByPrefixAsync("Hazarproducts__1");
 
                 response.Durum = true;
                 response.Mesaj = MesajConstats.GuncellemeMesaji;

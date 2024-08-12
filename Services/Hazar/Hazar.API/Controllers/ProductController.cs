@@ -48,11 +48,6 @@ namespace Hazar.API.Controllers
             return Ok(results.Result);
         }
 
-
-
-
-
-
         [HttpGet("search-products")]
         public async Task<IActionResult> SearchProducts(string query)
         {

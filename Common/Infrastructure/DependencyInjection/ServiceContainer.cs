@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 
 namespace Infrastructure.DependencyInjection
@@ -78,6 +79,11 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IElasticSearchService, ElasticSearchService>();
             // SignalR
             services.AddSignalR();
+
+            // Redis ConnectionMultiplexer ekleyin
+            var redisConnectionString = configuration["Redis:ConnectionString"];
+            var connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+            services.AddSingleton(connectionMultiplexer);
 
             //Cache Service
             services.AddScoped<ICacheService, CacheService>();

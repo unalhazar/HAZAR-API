@@ -4,6 +4,7 @@ namespace Domain.Response.Products
 {
     public class ProductResponse : BaseResponse
     {
+        public long Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

@@ -49,6 +49,9 @@ namespace Application.Features.Products.Queries.GetAllProducts
                     .Include(p => p.Category)
                     .Include(p => p.Brand));
 
+                // Verileri OrderByDescending ile sıralama
+                productsQuery = productsQuery.OrderByDescending(p => p.Id);
+
                 // PageNumber ve PageSize belirtilmediyse, tüm verileri getirin
                 if (request.PageNumber > 0 && request.PageSize > 0)
                 {
