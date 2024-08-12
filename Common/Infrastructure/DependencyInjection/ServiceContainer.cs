@@ -1,12 +1,14 @@
 ﻿using Application.Abstraction;
 using Infrastructure.AppServices.Background;
 using Infrastructure.AppServices.CacheService;
+using Infrastructure.AppServices.ElasticSearchService;
 using Infrastructure.AppServices.EmailService;
 using Infrastructure.AppServices.LogService.GlobalException;
 using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
 using Infrastructure.AppServices.TokenBlacklistService;
+using Infrastructure.ElasticSearch;
 using Infrastructure.OutSourceServices.GraphQL;
 using Infrastructure.OutSourceServices.REST;
 using Infrastructure.OutSourceServices.SOAP;
@@ -68,7 +70,12 @@ namespace Infrastructure.DependencyInjection
             //Background Service
             services.AddScoped<INotificationService, NotificationService>();
             services.AddHostedService<PeriodicTaskService>();
+            services.AddHostedService<ProductElasticIndexerBackgroundService>();
 
+            // ElasticSearch servisleri ekleyin
+            services.AddScoped<ProductElasticIndexer>();
+            services.AddScoped<ElasticSearchService>();
+            services.AddScoped<IElasticSearchService, ElasticSearchService>();
             // SignalR
             services.AddSignalR();
 

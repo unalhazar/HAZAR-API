@@ -49,13 +49,16 @@ namespace Application.Features.Products.Queries.GetAllProducts
                     .Include(p => p.Category)
                     .Include(p => p.Brand));
 
-                var totalCount = await productsQuery.CountAsync();
-                var pagedProducts = await productsQuery
-                    .Skip((request.PageNumber - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                // PageNumber ve PageSize belirtilmediyse, tüm verileri getirin
+                if (request.PageNumber > 0 && request.PageSize > 0)
+                {
+                    productsQuery = productsQuery
+                        .Skip((request.PageNumber - 1) * request.PageSize)
+                        .Take(request.PageSize);
+                }
 
-                var productResponses = _mapper.Map<List<ProductResponse>>(pagedProducts.ToList());
+                var pagedProducts = await productsQuery.ToListAsync();
+                var productResponses = _mapper.Map<List<ProductResponse>>(pagedProducts);
 
                 // Cache'e ekleme
                 await _cacheService.SetCacheDataAsync(cacheKey, productResponses, TimeSpan.FromMinutes(30));
@@ -74,5 +77,6 @@ namespace Application.Features.Products.Queries.GetAllProducts
 
             return response;
         }
+
     }
 }

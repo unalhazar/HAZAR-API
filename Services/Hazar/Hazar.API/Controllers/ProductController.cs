@@ -1,10 +1,14 @@
 ﻿using Application.Abstraction;
+using Application.Contracts.Persistence;
 using Application.Features.Products.Commands.Create;
 using Application.Features.Products.Commands.Delete;
 using Application.Features.Products.Commands.Import;
 using Application.Features.Products.Commands.Update;
 using Application.Features.Products.Queries.GetAllProducts;
 using Application.Features.Products.Queries.GetById;
+using Application.Features.Products.Queries.SearchQuery.Database;
+using Application.Features.Products.Queries.SearchQuery.ElasticSearch;
+using Infrastructure.AppServices.ElasticSearchService;
 using Infrastructure.AppServices.EmailService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +20,53 @@ namespace Hazar.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IProductService _productService;
+        private readonly IProductRepository _productRepository;
         private readonly EmailService _emailService;
+        private readonly ElasticSearchService _elasticSearchService;
 
-        public ProductController(IMediator mediator, IProductService productService, EmailService emailService)
+        public ProductController(IMediator mediator, IProductService productService, EmailService emailService, ElasticSearchService elasticSearchService)
         {
             _mediator = mediator;
             _productService = productService;
             _emailService = emailService;
+            _elasticSearchService = elasticSearchService;
         }
+
+
+
+        [HttpGet("search-elasticsearch")]
+        public async Task<IActionResult> SearchElasticSearch()
+        {
+            var results = await _mediator.Send(new SearchElasticSearchQuery());
+            return Ok(results.Result);
+        }
+
+        [HttpGet("search-database")]
+        public async Task<IActionResult> SearchDatabase()
+        {
+            var results = await _mediator.Send(new SearchDatabaseQuery());
+            return Ok(results.Result);
+        }
+
+
+
+
+
+
+        [HttpGet("search-products")]
+        public async Task<IActionResult> SearchProducts(string query)
+        {
+            await _elasticSearchService.SearchProductsAsync(query);
+            return Ok("Search completed.");
+        }
+
+        [HttpGet("search-advanced-products")]
+        public async Task<IActionResult> SearchAdvancedProducts(string query, int minPrice, int maxPrice)
+        {
+            await _elasticSearchService.SearchAdvancedProductsAsync(query, minPrice, maxPrice);
+            return Ok("Advanced search completed.");
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllProducts([FromQuery] string searchTerm = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
