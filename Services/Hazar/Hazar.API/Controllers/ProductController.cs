@@ -23,13 +23,15 @@ namespace Hazar.API.Controllers
         private readonly IProductRepository _productRepository;
         private readonly EmailService _emailService;
         private readonly ElasticSearchService _elasticSearchService;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IMediator mediator, IProductService productService, EmailService emailService, ElasticSearchService elasticSearchService)
+        public ProductController(IMediator mediator, IProductService productService, EmailService emailService, ElasticSearchService elasticSearchService, ILogger<ProductController> logger)
         {
             _mediator = mediator;
             _productService = productService;
             _emailService = emailService;
             _elasticSearchService = elasticSearchService;
+            _logger = logger;
         }
 
 
@@ -62,7 +64,7 @@ namespace Hazar.API.Controllers
             return Ok("Advanced search completed.");
         }
 
-
+        //[Authorize(Roles = UserRoles.Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAllProducts([FromQuery] string searchTerm = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
@@ -73,6 +75,7 @@ namespace Hazar.API.Controllers
                 PageSize = pageSize
             };
             var result = await _mediator.Send(query);
+            _logger.LogInformation("Sample log message with Serilog.");
             return Ok(result);
         }
 
