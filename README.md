@@ -1,9 +1,3 @@
-# HAZAR
-
-Tabii, README dosyasını daha kapsamlı hale getirecek şekilde yazdığımız background service ve diğer önemli bileşenleri de ekleyelim.
-
----
-
 # HAZAR API
 
 Bu proje, gelişmiş arama özelliklerine sahip bir ürün yönetim sistemi API'sini içermektedir. .NET Core ve çeşitli teknolojilerle geliştirilmiş olup, ElasticSearch, Redis, SignalR gibi araçlarla performans artırımı, gerçek zamanlı bildirimler ve cache yönetimi sağlanmıştır.
