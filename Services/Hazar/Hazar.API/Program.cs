@@ -7,39 +7,27 @@ using Microsoft.OpenApi.Models;
 using OfficeOpenXml;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 // EPPlus lisans konteksini ayarlayýn
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 // Add services to the container.
 
-builder.Services.AddControllers();
+
 
 
 // Serilog yapýlandýrmasý
-var columnWriters = new Dictionary<string, ColumnWriterBase>
-{
-    { "message", new RenderedMessageColumnWriter(NpgsqlTypes.NpgsqlDbType.Text) },
-    { "message_template", new MessageTemplateColumnWriter(NpgsqlTypes.NpgsqlDbType.Text) },
-    { "level", new LevelColumnWriter(true, NpgsqlTypes.NpgsqlDbType.Varchar) },
-    { "time_stamp", new TimestampColumnWriter(NpgsqlTypes.NpgsqlDbType.Timestamp) },
-    { "exception", new ExceptionColumnWriter(NpgsqlTypes.NpgsqlDbType.Text) },
-    { "log_event", new LogEventSerializedColumnWriter(NpgsqlTypes.NpgsqlDbType.Jsonb) }
-};
-
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.PostgreSQL(
-        connectionString: builder.Configuration.GetConnectionString("Default"),
-        tableName: "AppLogs",
-        columnOptions: columnWriters,
-        needAutoCreateTable: true)
+    .WriteTo.Console() // Loglarý console'a yazdýrýr
     .CreateLogger();
 
 builder.Host.UseSerilog();
+
+
+builder.Services.AddControllers();
 
 
 // Redis cache'i yapýlandýrma

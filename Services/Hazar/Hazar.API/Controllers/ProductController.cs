@@ -8,8 +8,8 @@ using Application.Features.Products.Queries.GetAllProducts;
 using Application.Features.Products.Queries.GetById;
 using Application.Features.Products.Queries.SearchQuery.Database;
 using Application.Features.Products.Queries.SearchQuery.ElasticSearch;
-using Infrastructure.AppServices.ElasticSearchService;
 using Infrastructure.AppServices.EmailService;
+using Infrastructure.AppServices.LogService.LoggingService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -22,16 +22,16 @@ namespace Hazar.API.Controllers
         private readonly IProductService _productService;
         private readonly IProductRepository _productRepository;
         private readonly EmailService _emailService;
-        private readonly ElasticSearchService _elasticSearchService;
-        private readonly ILogger<ProductController> _logger;
+        private readonly IElasticSearchService _elasticSearchService;
+        private readonly ILoggingService _loggingService;
 
-        public ProductController(IMediator mediator, IProductService productService, EmailService emailService, ElasticSearchService elasticSearchService, ILogger<ProductController> logger)
+        public ProductController(IMediator mediator, IProductService productService, EmailService emailService, IElasticSearchService elasticSearchService, ILoggingService loggingService)
         {
             _mediator = mediator;
             _productService = productService;
             _emailService = emailService;
             _elasticSearchService = elasticSearchService;
-            _logger = logger;
+            _loggingService = loggingService;
         }
 
 
@@ -75,7 +75,8 @@ namespace Hazar.API.Controllers
                 PageSize = pageSize
             };
             var result = await _mediator.Send(query);
-            _logger.LogInformation("Sample log message with Serilog.");
+            // Console'a log yazdırma
+            _loggingService.LogInformation("GetAllProducts method called.");
             return Ok(result);
         }
 

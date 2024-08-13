@@ -1,13 +1,13 @@
-﻿using Infrastructure.AppServices.ElasticSearchService;
+﻿using Application.Abstraction;
 
 namespace Infrastructure.ElasticSearch
 {
     public class ProductElasticIndexer
     {
         private readonly IProductRepository _productRepository;
-        private readonly ElasticSearchService _elasticSearchService;
+        private readonly IElasticSearchService _elasticSearchService;
 
-        public ProductElasticIndexer(IProductRepository productRepository, ElasticSearchService elasticSearchService)
+        public ProductElasticIndexer(IProductRepository productRepository, IElasticSearchService elasticSearchService)
         {
             _productRepository = productRepository;
             _elasticSearchService = elasticSearchService;

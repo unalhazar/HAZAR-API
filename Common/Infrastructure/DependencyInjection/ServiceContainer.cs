@@ -4,6 +4,7 @@ using Infrastructure.AppServices.CacheService;
 using Infrastructure.AppServices.ElasticSearchService;
 using Infrastructure.AppServices.EmailService;
 using Infrastructure.AppServices.LogService.GlobalException;
+using Infrastructure.AppServices.LogService.LoggingService;
 using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
@@ -67,6 +68,7 @@ namespace Infrastructure.DependencyInjection
             // Logging service'i ekleyin
             services.AddScoped<ILogUserService, LogUserService>();
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
+            services.AddSingleton<ILoggingService, LoggingService>();
 
             //Background Service
             services.AddScoped<INotificationService, NotificationService>();
@@ -75,7 +77,6 @@ namespace Infrastructure.DependencyInjection
 
             // ElasticSearch servisleri ekleyin
             services.AddScoped<ProductElasticIndexer>();
-            services.AddScoped<ElasticSearchService>();
             services.AddScoped<IElasticSearchService, ElasticSearchService>();
             // SignalR
             services.AddSignalR();

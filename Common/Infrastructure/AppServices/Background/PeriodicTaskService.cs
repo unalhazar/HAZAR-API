@@ -10,7 +10,7 @@ namespace Infrastructure.AppServices.Background
             {
                 // Yapmak istediğiniz periyodik işlemleri buraya ekleyin
                 Console.WriteLine("Periyodik görev çalışıyor.");
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
             }
         }
     }
