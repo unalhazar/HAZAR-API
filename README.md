@@ -21,7 +21,13 @@ Bu proje, gelişmiş arama özelliklerine sahip bir ürün yönetim sistemi API'
 - **PostgreSQL:** Veritabanı yönetim sistemi.
 - **SignalR:** Gerçek zamanlı bildirimler için kullanılır.
 - **Background Services:** Arka planda sürekli çalışan servisler ile veri indeksleme gibi işlemler yürütülür.
-- **Hangfire:** Hangfire ile basit dakikalık görev çalışması.
+- **Notification:**
+- **EmailService:**
+- **LogService:**
+- **TokenBlacklistService:**
+- **Hangfire:** 
+- **EventHandlers:** 
+
 ## Kurulum ve Çalıştırma
 
 ### Gerekli Bağımlılıklar
@@ -136,13 +142,6 @@ connection.on("ReceiveNotification", (user, message) => {
 
 connection.start().catch(err => console.error(err.toString()));
 ```
-
-## Test ve Hata Giderme
-
-- **Cache Sorunları:** Cache temizleme işlemleri Redis üzerinde gerçekleştirilir. Eğer cache temizlenmiyorsa, Redis bağlantınızı ve erişim izinlerini kontrol edin.
-- **ElasticSearch Sorunları:** ElasticSearch üzerinde indeksleme ve arama işlemlerinde hata alıyorsanız, ElasticSearch servisinin çalıştığından emin olun ve bağlantı ayarlarını gözden geçirin.
-- **Background Service:** ProductElasticIndexerBackgroundService'nin çalışıp çalışmadığını loglardan kontrol edebilirsiniz.
-
 ## Katkıda Bulunma
 
 Katkıda bulunmak isterseniz, lütfen bir pull request oluşturun veya bir issue açın.
