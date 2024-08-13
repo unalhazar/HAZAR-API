@@ -10,6 +10,7 @@ using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
 using Infrastructure.AppServices.TokenBlacklistService;
 using Infrastructure.ElasticSearch;
+using Infrastructure.Hangfire;
 using Infrastructure.OutSourceServices.GraphQL;
 using Infrastructure.OutSourceServices.REST;
 using Infrastructure.OutSourceServices.SOAP;
@@ -70,6 +71,8 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
             services.AddSingleton<ILoggingService, LoggingService>();
 
+            //Hangfire
+            services.AddHangfireServices(configuration);
             //Background Service
             services.AddScoped<INotificationService, NotificationService>();
             services.AddHostedService<PeriodicTaskService>();

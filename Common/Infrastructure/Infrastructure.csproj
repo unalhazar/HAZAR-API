@@ -11,6 +11,9 @@
     <PackageReference Include="EFCore.BulkExtensions" Version="8.0.4" />
     <PackageReference Include="Elasticsearch.Net" Version="7.10.1" />
     <PackageReference Include="EPPlus" Version="7.2.2" />
+    <PackageReference Include="Hangfire" Version="1.8.14" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.14" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.20.9" />
     <PackageReference Include="MailKit" Version="4.7.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />

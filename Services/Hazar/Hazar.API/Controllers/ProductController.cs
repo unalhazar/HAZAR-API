@@ -10,6 +10,7 @@ using Application.Features.Products.Queries.SearchQuery.Database;
 using Application.Features.Products.Queries.SearchQuery.ElasticSearch;
 using Infrastructure.AppServices.EmailService;
 using Infrastructure.AppServices.LogService.LoggingService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -78,6 +79,13 @@ namespace Hazar.API.Controllers
             // Console'a log yazdırma
             _loggingService.LogInformation("GetAllProducts method called.");
             return Ok(result);
+        }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpPost("admin-only")]
+        public IActionResult AdminOnlyAction()
+        {
+            return Ok("Bu eylem yalnızca adminlere özeldir.");
         }
 
         [HttpPost("send-email")]

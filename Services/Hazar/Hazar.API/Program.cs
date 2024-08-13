@@ -1,7 +1,11 @@
 using Application.DependencyInjection;
+using Application.Jobs;
+using Domain.Entities;
+using Hangfire;
 using Hazar.API.DependencyInjection;
 using Hazar.API.Middleware;
 using Infrastructure.DependencyInjection;
+using Infrastructure.Hangfire;
 using Infrastructure.SignalR;
 using Microsoft.OpenApi.Models;
 using OfficeOpenXml;
@@ -75,7 +79,23 @@ builder.Services.HazarAPIServices(builder.Configuration);
 
 builder.Services.AddSignalR();
 
+//Policy Tabanlý Yetkilendirme (Geliþmiþ)
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(UserRoles.Admin));
+    options.AddPolicy("RequireUserRole", policy => policy.RequireRole(UserRoles.User));
+});
+
+// Hangfire'ý ekleyin
+builder.Services.AddHangfireServices(builder.Configuration);
+
 var app = builder.Build();
+
+// Hangfire Dashboard'u ekleyin
+app.UseHangfireDashboard();
+
+// dakikalýk job'ý tanýmlayýn
+RecurringJob.AddOrUpdate<WeeklyJob>("weekly-job", job => job.Execute(), Cron.Minutely);
 
 app.UseMiddleware<TokenBlacklistMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
