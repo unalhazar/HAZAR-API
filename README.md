@@ -21,7 +21,7 @@ Bu proje, gelişmiş arama özelliklerine sahip bir ürün yönetim sistemi API'
 - **PostgreSQL:** Veritabanı yönetim sistemi.
 - **SignalR:** Gerçek zamanlı bildirimler için kullanılır.
 - **Background Services:** Arka planda sürekli çalışan servisler ile veri indeksleme gibi işlemler yürütülür.
-
+- **Hangfire:** Hangfire ile basit dakikalık görev çalışması.
 ## Kurulum ve Çalıştırma
 
 ### Gerekli Bağımlılıklar
