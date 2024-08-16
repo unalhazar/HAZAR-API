@@ -4,7 +4,6 @@ using Application.Features.Users.Commands.RefreshToken;
 using Application.Features.Users.Commands.RegisterUser;
 using Domain.Request.Users;
 using Domain.Response.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -43,14 +42,14 @@ namespace Hazar.API.Controllers
         }
 
         [HttpPost("logout")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<LogoutResponse>> LogoutUser()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var result = await _mediator.Send(new LogoutUserCommand(token));
-            if (result == null || !result.Success)
+            if (!result.Success)
             {
-                return BadRequest(result?.Message);
+                return BadRequest(result);
             }
             return Ok(result);
         }
@@ -59,9 +58,9 @@ namespace Hazar.API.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var response = await _mediator.Send(new RefreshTokenCommand(request));
-            if (response == null || !response.Success)
+            if (!response.Success)
             {
-                return Unauthorized(new { message = response?.Message });
+                return Unauthorized(new { message = response.Message });
             }
             return Ok(new { token = response.JwtToken, refreshToken = response.RefreshToken });
         }

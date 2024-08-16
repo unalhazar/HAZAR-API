@@ -8,7 +8,6 @@ using Infrastructure.AppServices.LogService.LoggingService;
 using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
-using Infrastructure.AppServices.TokenBlacklistService;
 using Infrastructure.ElasticSearch;
 using Infrastructure.Hangfire;
 using Infrastructure.OutSourceServices.GraphQL;
@@ -33,24 +32,31 @@ namespace Infrastructure.DependencyInjection
                 b => b.MigrationsAssembly(typeof(ServiceContainer).Assembly.FullName)),
                 ServiceLifetime.Scoped);
 
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; ;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
-                };
-            });
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = "http://localhost:5116", // HAZAR-AUTH-API'deki Issuer   
+                       ValidAudience = "http://localhost:5116", // HAZAR-AUTH-API'deki Audience
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("uıcjqQc341keqwe235rjchsTscmnbrjbzeqweqweqe3ft11fqw")) // HAZAR-AUTH-API'deki Key
+                   };
+               });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy =>
+                    policy.RequireRole("Admin"));
+            });
 
 
             //OutSource Service
@@ -94,14 +100,11 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IProductService, ProductService>();
 
             // Repository'i ekleyin
-            services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ILogUserRepository, LogUserRepository>();
-            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IGlobalLoggingRepository, GlobalLoggingRepository>();
-            services.AddScoped<ITokenBlacklistService, TokenBlacklistService>();
             // Diğer servis kayıtları
 
             return services;

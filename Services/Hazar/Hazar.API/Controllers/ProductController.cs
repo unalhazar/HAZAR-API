@@ -65,7 +65,6 @@ namespace Hazar.API.Controllers
             return Ok("Advanced search completed.");
         }
 
-        //[Authorize(Roles = UserRoles.Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAllProducts([FromQuery] string searchTerm = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {

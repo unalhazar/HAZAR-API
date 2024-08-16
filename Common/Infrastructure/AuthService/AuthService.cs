@@ -1,8 +1,11 @@
 ﻿using Application.Abstraction;
+using Application.Features.Users.Commands.LogoutUser;
 using Domain.Request.Users;
 using Domain.Response.Users;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace Infrastructure.AuthService
 {
@@ -46,6 +49,12 @@ namespace Infrastructure.AuthService
             var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5090/api/User/logout");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+            // LogoutUserCommand sınıfına 'token' parametresi ile bir nesne 
+            var logoutCommand = new LogoutUserCommand(token);
+
+            // JSON olarak logoutCommand
+            request.Content = new StringContent(JsonSerializer.Serialize(logoutCommand), Encoding.UTF8, "application/json");
+
             var response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
@@ -56,6 +65,8 @@ namespace Infrastructure.AuthService
             // Hata durumunda ne yapılacağına dair kod
             return null;
         }
+
+
 
         public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
         {

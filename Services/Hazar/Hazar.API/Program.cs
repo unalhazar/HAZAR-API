@@ -84,15 +84,13 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.ApplicationServices();
 builder.Services.InfrastructureServices(builder.Configuration);
 builder.Services.HazarAPIServices(builder.Configuration);
-
-builder.Services.AddSignalR();
-
 //Policy Tabanlý Yetkilendirme (Geliþmiþ)
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(UserRoles.Admin));
     options.AddPolicy("RequireUserRole", policy => policy.RequireRole(UserRoles.User));
 });
+builder.Services.AddSignalR();
 
 // Hangfire'ý ekleyin
 builder.Services.AddHangfireServices(builder.Configuration);
@@ -104,8 +102,6 @@ app.UseHangfireDashboard();
 
 // dakikalýk job'ý tanýmlayýn
 RecurringJob.AddOrUpdate<WeeklyJob>("weekly-job", job => job.Execute(), Cron.Minutely);
-
-app.UseMiddleware<TokenBlacklistMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
