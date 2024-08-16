@@ -1,4 +1,7 @@
-﻿using Application.Abstraction;
+﻿using Application.Features.Users.Commands.LoginUser;
+using Application.Features.Users.Commands.LogoutUser;
+using Application.Features.Users.Commands.RefreshToken;
+using Application.Features.Users.Commands.RegisterUser;
 using Domain.Request.Users;
 using Domain.Response.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -10,25 +13,32 @@ namespace Hazar.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUser user;
+        private readonly IMediator _mediator;
 
-        public UserController(IUser user)
+        public UserController(IMediator mediator)
         {
-            this.user = user;
+            _mediator = mediator;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponse>> LoginUser(LoginRequest request)
         {
-            var result = await user.LoginUserAsync(request);
+            var result = await _mediator.Send(new LoginUserCommand(request));
+            if (result == null || !result.Flag)
+            {
+                return Unauthorized(result?.Message);
+            }
             return Ok(result);
         }
 
-
         [HttpPost("register")]
-        public async Task<ActionResult<LoginResponse>> RegisterUser(RegisterUserRequest request)
+        public async Task<ActionResult<RegistrationResponse>> RegisterUser(RegisterUserRequest request)
         {
-            var result = await user.RegisterUserAsync(request);
+            var result = await _mediator.Send(new RegisterUserCommand(request));
+            if (result == null || !result.Flag)
+            {
+                return BadRequest(result?.Message);
+            }
             return Ok(result);
         }
 
@@ -37,29 +47,23 @@ namespace Hazar.API.Controllers
         public async Task<ActionResult<LogoutResponse>> LogoutUser()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            var result = await user.LogoutUserAsync(token);
-            if (!result.Success)
+            var result = await _mediator.Send(new LogoutUserCommand(token));
+            if (result == null || !result.Success)
             {
-                return BadRequest(result);
+                return BadRequest(result?.Message);
             }
-
             return Ok(result);
         }
 
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            var response = await user.RefreshTokenAsync(request);
-            if (!response.Success)
+            var response = await _mediator.Send(new RefreshTokenCommand(request));
+            if (response == null || !response.Success)
             {
-                return Unauthorized(new { message = response.Message });
+                return Unauthorized(new { message = response?.Message });
             }
             return Ok(new { token = response.JwtToken, refreshToken = response.RefreshToken });
         }
-
-
-
-
     }
 }
