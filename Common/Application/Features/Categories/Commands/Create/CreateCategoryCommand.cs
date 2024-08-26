@@ -1,5 +1,6 @@
-﻿using Domain.Request.Category;
-using Domain.Response.Categories;
+﻿using Application.Base;
+using Application.Features.Categories.Requests;
+using Application.Features.Categories.Responses;
 
 namespace Application.Features.Categories.Commands.Create
 {

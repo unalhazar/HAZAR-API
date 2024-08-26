@@ -1,4 +1,4 @@
-﻿namespace Domain.Request.Users
+﻿namespace Application.Features.Users.Requests
 {
     public class RefreshTokenRequest
     {

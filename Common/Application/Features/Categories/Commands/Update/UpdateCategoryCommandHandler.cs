@@ -1,6 +1,7 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
+using Application.Features.Categories.Responses;
 using Application.Helpers;
-using Domain.Response.Categories;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Categories.Commands.Update

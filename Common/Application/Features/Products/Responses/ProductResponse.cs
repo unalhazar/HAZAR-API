@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Application.Base;
+using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Response.Products
+namespace Application.Features.Products.Responses
 {
     public class ProductResponse : BaseResponse
     {

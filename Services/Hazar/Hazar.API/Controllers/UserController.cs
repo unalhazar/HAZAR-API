@@ -2,8 +2,8 @@
 using Application.Features.Users.Commands.LogoutUser;
 using Application.Features.Users.Commands.RefreshToken;
 using Application.Features.Users.Commands.RegisterUser;
-using Domain.Request.Users;
-using Domain.Response.Users;
+using Application.Features.Users.Requests;
+using Application.Features.Users.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers

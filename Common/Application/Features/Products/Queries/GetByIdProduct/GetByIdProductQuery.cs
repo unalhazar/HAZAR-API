@@ -1,4 +1,5 @@
-﻿using Domain.Response.Products;
+﻿using Application.Base;
+using Application.Features.Products.Responses;
 
 namespace Application.Features.Products.Queries.GetById
 {

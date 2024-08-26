@@ -1,4 +1,5 @@
-﻿using Domain.Response.Categories;
+﻿using Application.Base;
+using Application.Features.Categories.Responses;
 
 namespace Application.Features.Categories.Queries.GetAllCategories
 {

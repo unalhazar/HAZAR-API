@@ -1,9 +1,10 @@
 ﻿using Application.Abstraction;
+using Application.Base;
 using Application.Contracts.Persistence;
 using Application.EventHandlers;
 using Application.Features.Products.Commands.Create;
+using Application.Features.Products.Responses;
 using Application.Features.Products.Rules;
-using Domain.Response.Products;
 using System.Net;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProcessResult<ProductResponse>>

@@ -1,5 +1,6 @@
-﻿using Application.Contracts.Persistence;
-using Domain.Response.Brands;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
+using Application.Features.Brands.Responses;
 
 namespace Application.Features.Brands.Queries.GetByIdBrand
 {

@@ -1,4 +1,4 @@
-﻿namespace Domain.Base
+﻿namespace Application.Base
 {
     public class ProcessResult<T> : BaseResponse where T : new()
     {

@@ -1,5 +1,6 @@
-﻿using Application.Contracts.Persistence;
-using Domain.Response.Categories;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
+using Application.Features.Categories.Responses;
 
 namespace Application.Features.Categories.Queries.GetAllCategories
 {

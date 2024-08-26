@@ -1,14 +1,12 @@
-﻿using Application.Features.Brands.Commands.Create;
-using Application.Features.Brands.Commands.Delete;
-using Application.Features.Brands.Commands.Update;
+﻿using Application.Features.Brands.Commands.Delete;
+using Application.Features.Brands.Requests;
+using Application.Features.Brands.Responses;
 using Application.Features.Categories.Commands.Create;
 using Application.Features.Categories.Commands.Update;
+using Application.Features.Categories.Responses;
 using Application.Features.Products.Commands.Create;
-using Domain.Request.Brands;
-using Domain.Request.Products;
-using Domain.Response.Brands;
-using Domain.Response.Categories;
-using Domain.Response.Products;
+using Application.Features.Products.Requests;
+using Application.Features.Products.Responses;
 
 namespace Application.Mappings
 {

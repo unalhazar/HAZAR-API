@@ -1,6 +1,6 @@
-﻿using Domain.Base;
+﻿using Application.Base;
 
-namespace Domain.Response.Brands
+namespace Application.Features.Brands.Responses
 {
     public class BrandResponse : BaseResponse
     {

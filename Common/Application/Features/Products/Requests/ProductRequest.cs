@@ -1,4 +1,6 @@
-﻿namespace Domain.Request.Products
+﻿using Application.Base;
+
+namespace Application.Features.Products.Requests
 {
     public class ProductRequest : BaseRequest
     {

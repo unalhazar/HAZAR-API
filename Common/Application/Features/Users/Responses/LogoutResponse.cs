@@ -1,4 +1,4 @@
-﻿namespace Domain.Response.Users
+﻿namespace Application.Features.Users.Responses
 {
     public class LogoutResponse
     {

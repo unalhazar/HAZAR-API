@@ -1,4 +1,5 @@
-﻿using Domain.Response.Brands;
+﻿using Application.Base;
+using Application.Features.Brands.Responses;
 
 namespace Application.Features.Brands.Commands.Delete
 {

@@ -1,6 +1,7 @@
 ﻿using Application.Abstraction;
+using Application.Base;
 using Application.Contracts.Persistence;
-using Domain.Response.Products;
+using Application.Features.Products.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Products.Queries.GetAllProducts

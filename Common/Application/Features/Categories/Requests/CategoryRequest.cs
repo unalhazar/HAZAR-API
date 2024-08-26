@@ -1,4 +1,6 @@
-﻿namespace Domain.Request.Category
+﻿using Application.Base;
+
+namespace Application.Features.Categories.Requests
 {
     public class CategoryRequest : BaseRequest
     {

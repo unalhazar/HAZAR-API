@@ -1,4 +1,5 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
 
 namespace Application.Features.Products.Rules
 {

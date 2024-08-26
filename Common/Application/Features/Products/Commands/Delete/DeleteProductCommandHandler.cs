@@ -1,5 +1,6 @@
-﻿using Application.Contracts.Persistence;
-using Domain.Response.Products;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
+using Application.Features.Products.Responses;
 
 namespace Application.Features.Products.Commands.Delete
 {

@@ -1,4 +1,4 @@
-﻿using Domain.Response.Users;
+﻿using Application.Features.Users.Responses;
 
 namespace Application.Features.Users.Commands.LogoutUser
 {

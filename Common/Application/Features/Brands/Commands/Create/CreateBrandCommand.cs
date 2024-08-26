@@ -1,5 +1,6 @@
-﻿using Domain.Request.Brands;
-using Domain.Response.Brands;
+﻿using Application.Base;
+using Application.Features.Brands.Requests;
+using Application.Features.Brands.Responses;
 
 namespace Application.Features.Brands.Commands.Create
 {

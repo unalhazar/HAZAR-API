@@ -1,4 +1,6 @@
-﻿namespace Domain.Request.Brands
+﻿using Application.Base;
+
+namespace Application.Features.Brands.Requests
 {
     public class BrandRequest : BaseRequest
     {

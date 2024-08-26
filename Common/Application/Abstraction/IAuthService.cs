@@ -1,5 +1,5 @@
-﻿using Domain.Request.Users;
-using Domain.Response.Users;
+﻿using Application.Features.Users.Requests;
+using Application.Features.Users.Responses;
 
 namespace Application.Abstraction
 {

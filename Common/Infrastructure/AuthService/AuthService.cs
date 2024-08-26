@@ -1,7 +1,7 @@
 ﻿using Application.Abstraction;
 using Application.Features.Users.Commands.LogoutUser;
-using Domain.Request.Users;
-using Domain.Response.Users;
+using Application.Features.Users.Requests;
+using Application.Features.Users.Responses;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;

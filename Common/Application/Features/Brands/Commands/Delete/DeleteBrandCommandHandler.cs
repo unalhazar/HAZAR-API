@@ -1,7 +1,8 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
+using Application.Features.Brands.Responses;
 using Application.Helpers;
 using Domain;
-using Domain.Response.Brands;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Brands.Commands.Delete

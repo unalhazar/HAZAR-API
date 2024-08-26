@@ -1,6 +1,7 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Base;
+using Application.Contracts.Persistence;
 using Application.Features.Products.Queries.SearchQuery.Database;
-using Domain.Response.Products;
+using Application.Features.Products.Responses;
 using Microsoft.EntityFrameworkCore;
 
 public class SearchDatabaseQueryHandler : IRequestHandler<SearchDatabaseQuery, ProcessResult<List<ProductResponse>>>

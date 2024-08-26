@@ -1,7 +1,8 @@
 ﻿using Application.Abstraction;
+using Application.Base;
 using Application.Contracts.Persistence;
+using Application.Features.Products.Responses;
 using Application.Features.Products.Rules;
-using Domain.Response.Products;
 
 namespace Application.Features.Products.Commands.Update
 {
