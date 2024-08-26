@@ -1,32 +1,33 @@
-﻿using Application.Contracts.Persistence;
-using Application.Helpers;
+﻿using Application.Abstraction;
+using Application.Contracts.Persistence;
 using Domain;
 using Domain.Response.Brands;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Brands.Commands.Create
 {
-    public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, ProcessResult<BrandResponse>>
+    public class CreateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, ProcessResult<BrandResponse>>
     {
         private readonly IBrandRepository brandRepository;
         private readonly IMapper mapper;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUserService userService;
 
-        public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserService userService)
         {
             this.brandRepository = brandRepository;
             this.mapper = mapper;
             this.httpContextAccessor = httpContextAccessor;
+            this.userService = userService;
         }
 
-        public async Task<ProcessResult<BrandResponse>> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+        public async Task<ProcessResult<BrandResponse>> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
         {
             ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
 
             try
             {
-                var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var userId = JwtHelper.GetUserIdFromToken(token);
+                var userId = userService.GetUserId();
 
                 if (string.IsNullOrEmpty(userId))
                 {

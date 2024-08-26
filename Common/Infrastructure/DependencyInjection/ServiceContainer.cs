@@ -8,6 +8,7 @@ using Infrastructure.AppServices.LogService.LoggingService;
 using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
+using Infrastructure.AppServices.UserService;
 using Infrastructure.ElasticSearch;
 using Infrastructure.Hangfire;
 using Infrastructure.OutSourceServices.GraphQL;
@@ -74,6 +75,7 @@ namespace Infrastructure.DependencyInjection
 
             // Logging service'i ekleyin
             services.AddScoped<ILogUserService, LogUserService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
             services.AddSingleton<ILoggingService, LoggingService>();
 

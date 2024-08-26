@@ -1,13 +1,12 @@
-﻿namespace Application.Features.Brands.Commands.Create
+﻿namespace Application.Features.Brands.Commands.Update
 {
-    public class CreateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
+    public class UpdateBrandCommandValidator : AbstractValidator<UpdateBrandCommand>
     {
-        public CreateBrandCommandValidator()
+        public UpdateBrandCommandValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required.")
                 .MaximumLength(10).WithMessage("Name cannot exceed 10 characters.");
-
         }
     }
 }
