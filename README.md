@@ -17,6 +17,7 @@ Bu proje, gelişmiş arama özelliklerine sahip bir ürün yönetim sistemi API'
 - **ElasticSearch:** Ürünler üzerinde gelişmiş arama ve filtreleme işlemleri için kullanılır.
 - **Redis:** Ürün verilerinin cache'lenmesi ve hızlı erişim için kullanılır.
 - **MediatR:** CQRS ve MediatR desenleri kullanılarak sorumlulukların ayrılması sağlanır.
+- **ValidationBehavior :** 
 - **Entity Framework Core:** Veritabanı işlemleri için ORM aracı.
 - **PostgreSQL:** Veritabanı yönetim sistemi.
 - **SignalR:** Gerçek zamanlı bildirimler için kullanılır.
