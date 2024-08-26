@@ -1,4 +1,5 @@
-﻿using Application.Features.Products.Rules;
+﻿using Application.Behaviors;
+using Application.Features.Products.Rules;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -21,9 +22,13 @@ namespace Application.DependencyInjection
             services.AddFluentValidationClientsideAdapters();
             services.AddTransient<ProductRules>();
 
+
+            // ValidationBehavior'ı ekleyelim
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+
             return services;
         }
-
 
     }
 }

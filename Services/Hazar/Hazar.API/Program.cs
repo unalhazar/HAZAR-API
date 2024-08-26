@@ -15,19 +15,16 @@ using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
-// EPPlus lisans konteksini ayarlayýn
+// EPPlus lisans
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 // Add services to the container.
-
-
-
 
 // Serilog yapýlandýrmasý
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.Console() // Loglarý console'a yazdýrýr
+    .WriteTo.Console() // Loglarý console'a yaz
     .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -46,7 +43,7 @@ builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration["Redis:ConnectionString"];
-    options.InstanceName = "Hazar"; // Bu, cache anahtarlarýna ön ek ekler
+    options.InstanceName = "Hazar"; // Bu, cache anahtarlarýna ön ek
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -78,7 +75,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
@@ -89,14 +85,11 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
-
-
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.ApplicationServices();
 builder.Services.InfrastructureServices(builder.Configuration);
 builder.Services.HazarAPIServices(builder.Configuration);
-//Policy Tabanlý Yetkilendirme (Geliþmiþ)
+//Policy Tabanlý Yetkilendirme
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(UserRoles.Admin));
@@ -104,15 +97,15 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddSignalR();
 
-// Hangfire'ý ekleyin
+// Hangfire
 builder.Services.AddHangfireServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Hangfire Dashboard'u ekleyin
+// Hangfire Dashboard'u
 app.UseHangfireDashboard();
 
-// dakikalýk job'ý tanýmlayýn
+// job
 RecurringJob.AddOrUpdate<WeeklyJob>("weekly-job", job => job.Execute(), Cron.Minutely);
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
