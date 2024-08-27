@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Brands.Commands.Create
 {
-    public class CreateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, ProcessResult<BrandResponse>>
+    public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, ProcessResult<BrandResponse>>
     {
         private readonly IBrandRepository brandRepository;
         private readonly IMapper mapper;
@@ -22,7 +22,7 @@ namespace Application.Features.Brands.Commands.Create
             this.userService = userService;
         }
 
-        public async Task<ProcessResult<BrandResponse>> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
+        public async Task<ProcessResult<BrandResponse>> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
         {
             ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
 

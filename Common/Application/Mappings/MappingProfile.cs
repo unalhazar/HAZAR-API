@@ -24,11 +24,11 @@ namespace Application.Mappings
             #endregion
 
             #region Brand
-            CreateMap<Features.Brands.Commands.Create.UpdateBrandCommand, Brand>().ReverseMap();
+            CreateMap<Features.Brands.Commands.Create.CreateBrandCommand, Brand>().ReverseMap();
             CreateMap<Features.Brands.Commands.Update.UpdateBrandCommand, Brand>().ReverseMap();
             CreateMap<DeleteBrandCommand, Brand>().ReverseMap();
             CreateMap<Brand, BrandResponse>().ReverseMap();
-            CreateMap<Features.Brands.Commands.Create.UpdateBrandCommand, BrandRequest>().ReverseMap();
+            CreateMap<Features.Brands.Commands.Create.CreateBrandCommand, BrandRequest>().ReverseMap();
             #endregion
 
             #region Category

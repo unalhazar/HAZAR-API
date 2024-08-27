@@ -33,14 +33,14 @@ namespace Hazar.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Application.Features.Brands.Commands.Create.UpdateBrandCommand cmd)
+        public async Task<IActionResult> Create([FromBody] CreateBrandCommand cmd)
         {
             var result = await mediator.Send(cmd);
             return Ok(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Application.Features.Brands.Commands.Update.UpdateBrandCommand cmd)
+        public async Task<IActionResult> Update([FromBody] UpdateBrandCommand cmd)
         {
             var result = await mediator.Send(cmd);
             return Ok(result);

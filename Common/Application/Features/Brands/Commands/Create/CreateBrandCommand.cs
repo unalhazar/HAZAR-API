@@ -4,7 +4,7 @@ using Application.Features.Brands.Responses;
 
 namespace Application.Features.Brands.Commands.Create
 {
-    public class UpdateBrandCommand : BrandRequest, IRequest<ProcessResult<BrandResponse>>
+    public class CreateBrandCommand : BrandRequest, IRequest<ProcessResult<BrandResponse>>
     {
     }
 }
