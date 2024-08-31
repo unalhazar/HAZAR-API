@@ -3,6 +3,7 @@ using Application.Features.Brands.Commands.Delete;
 using Application.Features.Brands.Commands.Update;
 using Application.Features.Brands.Queries.GetAllBrand;
 using Application.Features.Brands.Queries.GetByIdBrand;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazar.API.Controllers
@@ -16,6 +17,13 @@ namespace Hazar.API.Controllers
         public BrandController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [Authorize]
+        [HttpGet("secure-data")]
+        public IActionResult GetSecureBrandData()
+        {
+            return Ok(new { message = "This is a secure brand data" });
         }
 
         [HttpGet]
