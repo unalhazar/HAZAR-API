@@ -1,4 +1,3 @@
-using Application.Abstraction;
 using Application.DependencyInjection;
 using Application.Jobs;
 using Domain.Entities;
@@ -23,8 +22,12 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.Console() // Loglarý console'a yaz
+    .Enrich.WithProperty("ApplicationName", "Hazar.API")
+    .WriteTo.Console() // Console'a yaz
+                       //.WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day) // Günlük dosyasý ekle
+    .WriteTo.Seq("http://localhost:5341")
     .CreateLogger();
+
 
 builder.Host.UseSerilog();
 
