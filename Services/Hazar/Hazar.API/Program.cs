@@ -4,6 +4,7 @@ using Domain.Entities;
 using Hangfire;
 using Hazar.API.DependencyInjection;
 using Hazar.API.Middleware;
+using Infrastructure.AuthService;
 using Infrastructure.DependencyInjection;
 using Infrastructure.Hangfire;
 using Infrastructure.SignalR;
@@ -33,6 +34,13 @@ builder.Host.UseSerilog();
 
 
 builder.Services.AddControllers();
+
+// AuthService ve IAuthService servisini ekleyin
+builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5090/");
+});
+
 
 // Redis cache'i yapýlandýrma
 builder.Services.AddStackExchangeRedisCache(options =>

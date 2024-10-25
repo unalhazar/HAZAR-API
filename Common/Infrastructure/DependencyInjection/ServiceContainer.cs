@@ -49,7 +49,7 @@ namespace Infrastructure.DependencyInjection
                        ValidateIssuerSigningKey = true,
                        ValidIssuer = "http://localhost:5116", // HAZAR-AUTH-API'deki Issuer   
                        ValidAudience = "http://localhost:5116", // HAZAR-AUTH-API'deki Audience
-                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])) // HAZAR-AUTH-API'deki Key
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("uıcjqQc341keqwe235rjchsTscmnbrjbzeqweqweqe3ft11fqw")) // HAZAR-AUTH-API'deki Key
                    };
                });
 
@@ -74,6 +74,7 @@ namespace Infrastructure.DependencyInjection
             ));
 
             // Logging service'i ekleyin
+            services.AddScoped<ILogUserService, LogUserService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
             services.AddSingleton<ILoggingService, LoggingService>();
