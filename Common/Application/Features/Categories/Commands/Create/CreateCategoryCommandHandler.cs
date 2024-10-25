@@ -39,7 +39,7 @@ namespace Application.Features.Categories.Commands.Create
 
                 var entity = mapper.Map<Category>(request);
                 entity.State = (int)State.Aktif;
-                entity.CreatedDate = DateTime.UtcNow;
+                entity.CreatedDate = DateTime.Now;
                 entity.CreatedUserId = long.Parse(userId); // Kullanıcı ID'sini ekle
                 await categoryRepository.AddAsync(entity);
 

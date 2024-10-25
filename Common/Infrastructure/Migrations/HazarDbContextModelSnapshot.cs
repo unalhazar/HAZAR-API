@@ -58,59 +58,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("AppLogs");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("CreatedUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("DeletedUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("Key")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("State")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("UpdatedUserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("Domain.Entities.Brand", b =>
                 {
                     b.Property<long>("Id")
@@ -316,54 +263,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("products", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Domain.Entities.TokenBlacklist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TokenBlacklists");
-                });
-
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.HasOne("Domain.Entities.Brand", "Brand")
@@ -381,17 +280,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Brand", b =>

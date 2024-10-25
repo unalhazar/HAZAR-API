@@ -32,7 +32,7 @@ namespace Application.Features.Brands.Commands.Update
                     throw new Exception("User ID not found in token.");
                 }
                 var entity = mapper.Map<Brand>(request);
-                entity.UpdatedDate = DateTime.UtcNow;
+                entity.UpdatedDate = DateTime.Now;
                 await brandRepository.UpdateAsync(entity);
                 response.Result = mapper.Map<BrandResponse>(entity);
                 response.Durum = true;

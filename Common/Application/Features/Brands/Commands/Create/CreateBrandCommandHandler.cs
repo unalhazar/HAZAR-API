@@ -37,7 +37,7 @@ namespace Application.Features.Brands.Commands.Create
 
                 var entity = mapper.Map<Brand>(request);
                 entity.State = (int)State.Aktif;
-                entity.CreatedDate = DateTime.UtcNow;
+                entity.CreatedDate = DateTime.Now;
                 entity.UpdatedUserId = long.Parse(userId);
                 await brandRepository.AddAsync(entity);
                 response.Result = mapper.Map<BrandResponse>(entity);

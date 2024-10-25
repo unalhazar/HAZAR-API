@@ -41,7 +41,7 @@ namespace Application.Features.Categories.Commands.Delete
                     response.HttpStatusCode = System.Net.HttpStatusCode.NotFound;
                     return response;
                 }
-                entity.DeletedDate = DateTime.UtcNow;
+                entity.DeletedDate = DateTime.Now;
                 entity.State = (int)State.Pasif;
                 entity.DeletedUserId = long.Parse(userId);
                 await brandRepository.UpdateAsync(entity);
