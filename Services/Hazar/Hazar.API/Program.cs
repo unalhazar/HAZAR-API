@@ -9,6 +9,7 @@ using Infrastructure.AuthService;
 using Infrastructure.DependencyInjection;
 using Infrastructure.Hangfire;
 using Infrastructure.SignalR;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using OfficeOpenXml;
 using Serilog;
@@ -108,6 +109,21 @@ var app = builder.Build();
 
 // Hangfire Dashboard'u
 app.UseHangfireDashboard();
+
+// Health Check endpoint'i
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var result = Newtonsoft.Json.JsonConvert.SerializeObject(new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(e => new { key = e.Key, value = e.Value.Status.ToString() })
+        });
+        await context.Response.WriteAsync(result);
+    }
+});
 
 // job
 RecurringJob.AddOrUpdate<WeeklyJob>("weekly-job", job => job.Execute(), Cron.Minutely);

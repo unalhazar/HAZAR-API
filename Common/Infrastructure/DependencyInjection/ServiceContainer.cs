@@ -9,6 +9,7 @@ using Infrastructure.AppServices.LogService.User;
 using Infrastructure.AppServices.Notification;
 using Infrastructure.AppServices.ProductService;
 using Infrastructure.AppServices.UserService;
+using Infrastructure.Configurations;
 using Infrastructure.ElasticSearch;
 using Infrastructure.Hangfire;
 using Infrastructure.OutSourceServices.GraphQL;
@@ -81,6 +82,10 @@ namespace Infrastructure.DependencyInjection
 
             //Hangfire
             services.AddHangfireServices(configuration);
+
+            // Health Checks ekleyin
+            services.AddProjectHealthChecks(configuration);
+
             //Background Service
             services.AddScoped<INotificationService, NotificationService>();
             services.AddHostedService<PeriodicTaskService>();

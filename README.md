@@ -29,6 +29,8 @@ Bu proje, gelişmiş arama özelliklerine sahip bir ürün yönetim sistemi API'
 - **Hangfire:** 
 - **EventHandlers:** 
 - **Seq:**
+- **Health Checks:**
+
 ## Kurulum ve Çalıştırma
 
 ### Gerekli Bağımlılıklar
