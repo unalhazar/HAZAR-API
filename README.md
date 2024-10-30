@@ -28,7 +28,7 @@ Bu proje, gelişmiş arama özelliklerine sahip bir ürün yönetim sistemi API'
 - **TokenBlacklistService:**
 - **Hangfire:** 
 - **EventHandlers:** 
-
+- **Seq:**
 ## Kurulum ve Çalıştırma
 
 ### Gerekli Bağımlılıklar
