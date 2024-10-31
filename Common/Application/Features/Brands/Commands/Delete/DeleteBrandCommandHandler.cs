@@ -1,4 +1,5 @@
-﻿using Application.Base;
+﻿using Application.Abstraction;
+using Application.Base;
 using Application.Contracts.Persistence;
 using Application.Features.Brands.Responses;
 using Application.Helpers;
@@ -7,19 +8,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Brands.Commands.Delete
 {
-    public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, ProcessResult<BrandResponse>>
+    public class DeleteBrandCommandHandler(
+        IBrandRepository brandRepository,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor,
+        IUserService userService)
+        : IRequestHandler<DeleteBrandCommand, ProcessResult<BrandResponse>>
     {
-        private readonly IBrandRepository brandRepository;
-        private readonly IMapper mapper;
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-
-        public DeleteBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
-        {
-            this.brandRepository = brandRepository;
-            this.mapper = mapper;
-            this.httpContextAccessor = httpContextAccessor;
-        }
+        private readonly IHttpContextAccessor httpContextAccessor = httpContextAccessor;
 
         public async Task<ProcessResult<BrandResponse>> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
         {
@@ -35,22 +31,21 @@ namespace Application.Features.Brands.Commands.Delete
                     {
                         throw new Exception("User ID not found in token.");
                     }
+
+                    var entity = await brandRepository.GetByIdAsync(request.Id);
+                    if (entity == null)
+                    {
+                        response.Durum = false;
+                        response.Mesaj = "Brand not found.";
+                        response.HttpStatusCode = System.Net.HttpStatusCode.NotFound;
+                        return response;
+                    }
+                    entity.DeletedDate = DateTime.Now;
+                    entity.DeletedUserId = long.Parse(userId);
+                    entity.State = (int)State.Pasif;
+                    await brandRepository.UpdateAsync(entity);
+                    response.Result = mapper.Map<BrandResponse>(entity);
                 }
-
-                var entity = await brandRepository.GetByIdAsync(request.Id);
-                if (entity == null)
-                {
-                    response.Durum = false;
-                    response.Mesaj = "Brand not found.";
-                    response.HttpStatusCode = System.Net.HttpStatusCode.NotFound;
-                    return response;
-                }
-                entity.DeletedDate = DateTime.Now;
-                entity.State = (int)State.Pasif;
-
-                await brandRepository.UpdateAsync(entity);
-                response.Result = mapper.Map<BrandResponse>(entity);
-
                 response.Durum = true;
                 response.Mesaj = MesajConstats.SilmeMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;

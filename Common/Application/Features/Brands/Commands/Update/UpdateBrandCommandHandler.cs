@@ -1,4 +1,5 @@
-﻿using Application.Base;
+﻿using Application.Abstraction;
+using Application.Base;
 using Application.Contracts.Persistence;
 using Application.Features.Brands.Responses;
 using Application.Helpers;
@@ -6,19 +7,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Brands.Commands.Update
 {
-    public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, ProcessResult<BrandResponse>>
+    public class UpdateBrandCommandHandler(
+        IBrandRepository brandRepository,
+        IMapper mapper,
+        IUserService userService,
+        IHttpContextAccessor httpContextAccessor)
+        : IRequestHandler<UpdateBrandCommand, ProcessResult<BrandResponse>>
     {
-        private readonly IBrandRepository brandRepository;
-        private readonly IMapper mapper;
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public UpdateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
-        {
-            this.brandRepository = brandRepository;
-            this.mapper = mapper;
-            this.httpContextAccessor = httpContextAccessor;
-        }
-
         public async Task<ProcessResult<BrandResponse>> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
         {
             ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
@@ -33,12 +28,13 @@ namespace Application.Features.Brands.Commands.Update
                     {
                         throw new Exception("User ID not found in token.");
                     }
-                }
 
-                var entity = mapper.Map<Brand>(request);
-                entity.UpdatedDate = DateTime.Now;
-                await brandRepository.UpdateAsync(entity);
-                response.Result = mapper.Map<BrandResponse>(entity);
+                    var entity = mapper.Map<Brand>(request);
+                    entity.UpdatedDate = DateTime.Now;
+                    entity.UpdatedUserId = long.Parse(userId);
+                    await brandRepository.UpdateAsync(entity);
+                    response.Result = mapper.Map<BrandResponse>(entity);
+                }
                 response.Durum = true;
                 response.Mesaj = MesajConstats.GuncellemeMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;

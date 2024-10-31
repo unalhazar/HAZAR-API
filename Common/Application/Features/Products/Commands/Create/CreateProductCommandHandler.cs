@@ -7,26 +7,20 @@ using Application.Features.Products.Responses;
 using Application.Features.Products.Rules;
 using System.Net;
 
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProcessResult<ProductResponse>>
+public class CreateProductCommandHandler(
+    IProductRepository productRepository,
+    IMapper mapper,
+    ProductRules productRules,
+    IMediator mediator,
+    ICacheService cacheService)
+    : IRequestHandler<CreateProductCommand, ProcessResult<ProductResponse>>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IMapper _mapper;
-    private readonly ProductRules _productRules;
-    private readonly IMediator _mediator;
-    private readonly ICacheService _cacheService;
-
-    public CreateProductCommandHandler(IProductRepository productRepository, IMapper mapper, ProductRules productRules, IMediator mediator, ICacheService cacheService)
-    {
-        _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _productRules = productRules;
-        _mediator = mediator;
-        _cacheService = cacheService;
-    }
+    private readonly IProductRepository _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     public async Task<ProcessResult<ProductResponse>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var checkResult = await _productRules.CheckIfProductNameIsUniqueAsync(request.Name);
+        var checkResult = await productRules.CheckIfProductNameIsUniqueAsync(request.Name);
         if (!checkResult.Durum)
         {
             return new ProcessResult<ProductResponse>
@@ -42,8 +36,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             var product = _mapper.Map<Product>(request);
             var addedProduct = await _productRepository.AddAsync(product);
 
-            await _cacheService.ClearCacheByPrefixAsync(CacheConstants.ProductCachePrefix);
-            await _mediator.Publish(new ProductCreatedEvent(product.Id, product.Name), cancellationToken);
+            await cacheService.ClearCacheByPrefixAsync(CacheConstants.ProductCachePrefix);
+            await mediator.Publish(new ProductCreatedEvent(product.Id, product.Name), cancellationToken);
 
             return new ProcessResult<ProductResponse>
             {
