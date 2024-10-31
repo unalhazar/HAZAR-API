@@ -9,15 +9,8 @@ namespace Hazar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator mediator;
-
-        public CategoryController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

@@ -16,9 +16,9 @@ namespace Hazar.API.Controllers
         public async Task<ActionResult<LoginResponse>> LoginUser(LoginRequest request)
         {
             var result = await mediator.Send(new LoginUserCommand(request));
-            if (result == null || !result.Flag)
+            if (!result.Flag)
             {
-                return Unauthorized(result?.Message);
+                return Unauthorized(result.Message);
             }
             return Ok(result);
         }
@@ -27,15 +27,14 @@ namespace Hazar.API.Controllers
         public async Task<ActionResult<RegistrationResponse>> RegisterUser(RegisterUserRequest request)
         {
             var result = await mediator.Send(new RegisterUserCommand(request));
-            if (result == null || !result.Flag)
+            if (!result.Flag)
             {
-                return BadRequest(result?.Message);
+                return BadRequest(result.Message);
             }
             return Ok(result);
         }
 
         [HttpPost("logout")]
-        //[Authorize]
         public async Task<ActionResult<LogoutResponse>> LogoutUser()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
