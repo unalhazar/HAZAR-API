@@ -10,19 +10,12 @@ namespace Hazar.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public UserController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponse>> LoginUser(LoginRequest request)
         {
-            var result = await _mediator.Send(new LoginUserCommand(request));
+            var result = await mediator.Send(new LoginUserCommand(request));
             if (result == null || !result.Flag)
             {
                 return Unauthorized(result?.Message);
@@ -33,7 +26,7 @@ namespace Hazar.API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<RegistrationResponse>> RegisterUser(RegisterUserRequest request)
         {
-            var result = await _mediator.Send(new RegisterUserCommand(request));
+            var result = await mediator.Send(new RegisterUserCommand(request));
             if (result == null || !result.Flag)
             {
                 return BadRequest(result?.Message);
@@ -46,7 +39,7 @@ namespace Hazar.API.Controllers
         public async Task<ActionResult<LogoutResponse>> LogoutUser()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var result = await _mediator.Send(new LogoutUserCommand(token));
+            var result = await mediator.Send(new LogoutUserCommand(token));
             if (!result.Success)
             {
                 return BadRequest(result);
@@ -57,7 +50,7 @@ namespace Hazar.API.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            var response = await _mediator.Send(new RefreshTokenCommand(request));
+            var response = await mediator.Send(new RefreshTokenCommand(request));
             if (!response.Success)
             {
                 return Unauthorized(new { message = response.Message });
