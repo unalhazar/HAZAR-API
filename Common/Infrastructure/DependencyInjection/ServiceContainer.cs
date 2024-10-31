@@ -3,6 +3,7 @@ using Infrastructure.AppServices.Background;
 using Infrastructure.AppServices.CacheService;
 using Infrastructure.AppServices.ElasticSearchService;
 using Infrastructure.AppServices.EmailService;
+using Infrastructure.AppServices.ExternalService;
 using Infrastructure.AppServices.LogService.GlobalException;
 using Infrastructure.AppServices.LogService.LoggingService;
 using Infrastructure.AppServices.LogService.User;
@@ -20,6 +21,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
+using Polly.Extensions.Http;
 using StackExchange.Redis;
 using System.Text;
 
@@ -60,13 +63,28 @@ namespace Infrastructure.DependencyInjection
                     policy.RequireRole("Admin"));
             });
 
+            // AuthService ile Polly Dayanıklılık Politikaları
+            services.AddHttpClient<IAuthService, Infrastructure.AuthService.AuthService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5090");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            })
+            .AddPolicyHandler(GetRetryPolicy())
+            .AddPolicyHandler(GetCircuitBreakerPolicy())
+            .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(10))) // Zaman aşımı politikası
+            .AddPolicyHandler(Policy<HttpResponseMessage>
+            .Handle<Exception>() // Genel bir hata oluşursa
+            .FallbackAsync(new HttpResponseMessage(System.Net.HttpStatusCode.ServiceUnavailable)
+            {
+                Content = new StringContent("Geçici olarak hizmet kullanılamıyor. Lütfen daha sonra tekrar deneyin.")
+            }));
 
-            //OutSource Service
+            // OutSource Service
             services.AddHttpClient<JsonPlaceHolderGetUserService>();
             services.AddHttpClient<SpacexRocketService>();
             services.AddHttpClient<WebserviceXGetWeatherService>();
 
-            //Email Service
+            // Email Service
             services.AddScoped<EmailService>(sp => new EmailService(
                 configuration["Email:SmtpServer"],
                 int.Parse(configuration["Email:SmtpPort"]),
@@ -80,11 +98,17 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IGlobalLoggingService, GlobalLoggingService>();
             services.AddSingleton<ILoggingService, LoggingService>();
 
-            //Hangfire
+            // Hangfire
             services.AddHangfireServices(configuration);
 
             // Health Checks ekleyin
             services.AddProjectHealthChecks(configuration);
+
+            // Polly
+            services.AddHttpClientsWithPolly();
+
+
+            services.AddScoped<IExternalService, ExternalService>();
 
             //Background Service
             services.AddScoped<INotificationService, NotificationService>();
@@ -102,7 +126,7 @@ namespace Infrastructure.DependencyInjection
             var connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
             services.AddSingleton(connectionMultiplexer);
 
-            //Cache Service
+            // Cache Service
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IProductService, ProductService>();
 
@@ -115,6 +139,27 @@ namespace Infrastructure.DependencyInjection
             // Diğer servis kayıtları
 
             return services;
+        }
+
+        // Yeniden Deneme (Retry) Politikası
+        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .WaitAndRetryAsync(3, retryAttempt =>
+                {
+                    Console.WriteLine($"Retrying... attempt {retryAttempt}");
+                    return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+                });
+        }
+
+
+        // Devre Kesici (Circuit Breaker) Politikası
+        private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)); // 5 hata sonrası 30 saniyelik devre kesici
         }
     }
 }

@@ -16,7 +16,12 @@ namespace Infrastructure.AppServices.UserService
         public string GetUserId()
         {
             var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+                return null;
+
             return JwtHelper.GetUserIdFromToken(token);
         }
+
     }
 }
