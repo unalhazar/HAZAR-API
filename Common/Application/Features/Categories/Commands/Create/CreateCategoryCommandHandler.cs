@@ -29,21 +29,25 @@ namespace Application.Features.Categories.Commands.Create
 
             try
             {
-                var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var userId = JwtHelper.GetUserIdFromToken(token);
-
-                if (string.IsNullOrEmpty(userId))
+                var token = httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                if (token != null)
                 {
-                    throw new Exception("User ID not found in token.");
+                    var userId = JwtHelper.GetUserIdFromToken(token);
+
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        throw new Exception("User ID not found in token.");
+                    }
+
+                    var entity = mapper.Map<Category>(request);
+                    entity.State = (int)State.Aktif;
+                    entity.CreatedDate = DateTime.Now;
+                    entity.CreatedUserId = long.Parse(userId); // Kullanıcı ID'sini ekle
+                    await categoryRepository.AddAsync(entity);
+
+                    response.Result = mapper.Map<CategoryResponse>(entity);
                 }
 
-                var entity = mapper.Map<Category>(request);
-                entity.State = (int)State.Aktif;
-                entity.CreatedDate = DateTime.Now;
-                entity.CreatedUserId = long.Parse(userId); // Kullanıcı ID'sini ekle
-                await categoryRepository.AddAsync(entity);
-
-                response.Result = mapper.Map<CategoryResponse>(entity);
                 response.Durum = true;
                 response.Mesaj = MesajConstats.EklemeMesaji;
                 response.HttpStatusCode = System.Net.HttpStatusCode.OK;

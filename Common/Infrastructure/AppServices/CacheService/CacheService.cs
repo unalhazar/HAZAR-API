@@ -61,11 +61,11 @@ namespace Infrastructure.AppServices.CacheService
             }
         }
 
-        private async Task<IEnumerable<string>> GetCacheKeysAsync()
+        private Task<IEnumerable<string>> GetCacheKeysAsync()
         {
             var server = _connectionMultiplexer.GetServer(_connectionMultiplexer.GetEndPoints().First());
             var keys = server.Keys(database: 0, pattern: "*");
-            return keys.Select(k => k.ToString());
+            return Task.FromResult(keys.Select(k => k.ToString()));
         }
     }
 }

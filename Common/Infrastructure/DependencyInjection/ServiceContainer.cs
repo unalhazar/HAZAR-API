@@ -123,8 +123,11 @@ namespace Infrastructure.DependencyInjection
 
             // Redis ConnectionMultiplexer ekleyin
             var redisConnectionString = configuration["Redis:ConnectionString"];
-            var connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
-            services.AddSingleton(connectionMultiplexer);
+            if (redisConnectionString != null)
+            {
+                var connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+                services.AddSingleton(connectionMultiplexer);
+            }
 
             // Cache Service
             services.AddScoped<ICacheService, CacheService>();

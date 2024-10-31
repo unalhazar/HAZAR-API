@@ -23,19 +23,22 @@ namespace Application.Features.Categories.Commands.Update
             ProcessResult<CategoryResponse> response = new ProcessResult<CategoryResponse>();
             try
             {
-                var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var userId = JwtHelper.GetUserIdFromToken(token);
-
-                if (string.IsNullOrEmpty(userId))
+                var token = httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                if (token != null)
                 {
-                    throw new Exception("User ID not found in token.");
-                }
+                    var userId = JwtHelper.GetUserIdFromToken(token);
 
-                var entity = mapper.Map<Category>(request);
-                entity.UpdatedDate = DateTime.Now;
-                entity.UpdatedUserId = long.Parse(userId);
-                await brandRepository.UpdateAsync(entity);
-                response.Result = mapper.Map<CategoryResponse>(entity);
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        throw new Exception("User ID not found in token.");
+                    }
+
+                    var entity = mapper.Map<Category>(request);
+                    entity.UpdatedDate = DateTime.Now;
+                    entity.UpdatedUserId = long.Parse(userId);
+                    await brandRepository.UpdateAsync(entity);
+                    response.Result = mapper.Map<CategoryResponse>(entity);
+                }
 
 
                 response.Durum = true;

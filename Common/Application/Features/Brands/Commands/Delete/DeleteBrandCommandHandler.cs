@@ -26,13 +26,17 @@ namespace Application.Features.Brands.Commands.Delete
             ProcessResult<BrandResponse> response = new ProcessResult<BrandResponse>();
             try
             {
-                var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var userId = JwtHelper.GetUserIdFromToken(token);
-
-                if (string.IsNullOrEmpty(userId))
+                var token = httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                if (token != null)
                 {
-                    throw new Exception("User ID not found in token.");
+                    var userId = JwtHelper.GetUserIdFromToken(token);
+
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        throw new Exception("User ID not found in token.");
+                    }
                 }
+
                 var entity = await brandRepository.GetByIdAsync(request.Id);
                 if (entity == null)
                 {

@@ -4,6 +4,17 @@ namespace Application.Features.Products.Requests
 {
     public class ProductRequest : BaseRequest
     {
+        public ProductRequest(string name, string description, decimal price, int stock, string? ımageUrl, long categoryId, long brandId)
+        {
+            Name = name;
+            Description = description;
+            Price = price;
+            Stock = stock;
+            ImageUrl = ımageUrl;
+            CategoryId = categoryId;
+            BrandId = brandId;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

@@ -5,12 +5,12 @@ namespace Infrastructure.AppServices.EmailService
 {
     public class EmailService
     {
-        private readonly string _smtpServer;
+        private readonly string? _smtpServer;
         private readonly int _smtpPort;
-        private readonly string _smtpUser;
-        private readonly string _smtpPass;
+        private readonly string? _smtpUser;
+        private readonly string? _smtpPass;
 
-        public EmailService(string smtpServer, int smtpPort, string smtpUser, string smtpPass)
+        public EmailService(string? smtpServer, int smtpPort, string? smtpUser, string? smtpPass)
         {
             _smtpServer = smtpServer;
             _smtpPort = smtpPort;

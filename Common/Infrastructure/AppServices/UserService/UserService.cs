@@ -13,7 +13,7 @@ namespace Infrastructure.AppServices.UserService
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetUserId()
+        public string? GetUserId()
         {
             var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
