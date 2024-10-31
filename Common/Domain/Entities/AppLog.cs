@@ -1,12 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
     public class AppLog
     {
-        public AppLog(int ıd, string message, string messageTemplate, string level, DateTime timeStamp, string exception, string logEvent)
+        // Parametresiz constructor
+        public AppLog() { }
+
+        // Parametreli constructor
+        public AppLog(
+            int id,
+            string message,
+            string messageTemplate,
+            string level,
+            DateTime timeStamp,
+            string exception,
+            string logEvent)
         {
-            Id = ıd;
+            Id = id;
             Message = message;
             MessageTemplate = messageTemplate;
             Level = level;
@@ -17,6 +29,7 @@ namespace Domain.Entities
 
         [Key]
         public int Id { get; set; }
+
         public string Message { get; set; }
         public string MessageTemplate { get; set; }
         public string Level { get; set; }
