@@ -8,24 +8,21 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.AuthService
 {
-    public class AuthService : IAuthService
+    public class AuthService(HttpClient httpClient, IOptions<AuthServiceSettings> settings)
+        : IAuthService
     {
-        private readonly HttpClient _httpClient;
-
-        public AuthService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+        private readonly AuthServiceSettings _settings = settings.Value;
 
         public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
         {
             try
             {
-                _httpClient.DefaultRequestHeaders.Authorization = null;
-                var response = await _httpClient.PostAsJsonAsync("http://localhost:5090/api/User/login", loginRequest);
+                httpClient.DefaultRequestHeaders.Authorization = null;
+                var response = await httpClient.PostAsJsonAsync($"{_settings.BaseUrl}{_settings.LoginEndpoint}", loginRequest);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -33,25 +30,20 @@ namespace Infrastructure.AuthService
                 }
                 else
                 {
-                    // Hata durumunda anlamlı bir mesaj içeren LoginResponse döndür
                     return new LoginResponse(false, $"Login işlemi başarısız oldu. Hata Kodu: {response.StatusCode} - {response.ReasonPhrase}", null, null);
                 }
             }
             catch (TimeoutRejectedException)
             {
-                // Zaman aşımı durumunda anlamlı bir mesaj döndür
                 return new LoginResponse(false, "Hizmet yanıt vermiyor. Lütfen daha sonra tekrar deneyin.", null, null);
             }
             catch (BrokenCircuitException)
             {
-                // Devre kesici durumu devredeyken anlamlı bir mesaj döndür
                 return new LoginResponse(false, "Hizmet şu anda kullanılamıyor. Lütfen bir süre sonra tekrar deneyin.", null, null);
             }
             catch (Exception ex)
             {
-                // Diğer beklenmedik hatalar için loglama ve genel hata mesajı döndürme
                 Console.WriteLine($"Login işlemi sırasında bir hata oluştu: {ex.Message}");
-
                 return new LoginResponse(false, "Login işlemi sırasında bir hata oluştu. Lütfen daha sonra tekrar deneyin.", null, null);
             }
         }
@@ -60,7 +52,7 @@ namespace Infrastructure.AuthService
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("http://localhost:5090/api/User/register", registerRequest);
+                var response = await httpClient.PostAsJsonAsync($"{_settings.BaseUrl}{_settings.RegisterEndpoint}", registerRequest);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -90,16 +82,13 @@ namespace Infrastructure.AuthService
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5090/api/User/logout");
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{_settings.BaseUrl}{_settings.LogoutEndpoint}");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // LogoutUserCommand sınıfına 'token' parametresi ile bir nesne 
                 var logoutCommand = new LogoutUserCommand(token);
-
-                // JSON olarak logoutCommand
                 request.Content = new StringContent(JsonSerializer.Serialize(logoutCommand), Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.SendAsync(request);
+                var response = await httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -127,15 +116,15 @@ namespace Infrastructure.AuthService
 
         public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest refreshTokenRequest)
         {
-            var response = await _httpClient.PostAsJsonAsync("http://localhost:5090/api/User/refresh-token", refreshTokenRequest);
+            var response = await httpClient.PostAsJsonAsync($"{_settings.BaseUrl}{_settings.RefreshTokenEndpoint}", refreshTokenRequest);
 
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<RefreshTokenResponse>();
             }
 
-            // Hata durumunda ne yapılacağına dair kod
-            return null;
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            throw new HttpRequestException($"Token yenileme işlemi başarısız oldu. Status Code: {response.StatusCode}, Error: {errorMessage}");
         }
     }
 }

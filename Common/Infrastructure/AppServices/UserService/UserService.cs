@@ -4,15 +4,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.AppServices.UserService
 {
-    public class UserService : IUserService
+    public class UserService(IHttpContextAccessor httpContextAccessor) : IUserService
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public UserService(IHttpContextAccessor httpContextAccessor)
-        {
-            this.httpContextAccessor = httpContextAccessor;
-        }
-
         public string? GetUserId()
         {
             var token = httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");

@@ -36,8 +36,7 @@ namespace Application.Features.Products.Queries.GetAllProducts
                     response.HttpStatusCode = System.Net.HttpStatusCode.OK;
                     return response;
                 }
-
-                // Arama terimini kullanarak filtre oluşturma
+                
                 Expression<Func<Product, bool>> filter = null;
                 if (!string.IsNullOrEmpty(request.SearchTerm))
                 {
@@ -49,11 +48,9 @@ namespace Application.Features.Products.Queries.GetAllProducts
                     includes: q => q
                     .Include(p => p.Category)
                     .Include(p => p.Brand));
-
-                // Verileri OrderByDescending ile sıralama
+                
                 productsQuery = productsQuery.OrderByDescending(p => p.Id);
-
-                // PageNumber ve PageSize belirtilmediyse, tüm verileri getirin
+               
                 if (request.PageNumber > 0 && request.PageSize > 0)
                 {
                     productsQuery = productsQuery
@@ -63,9 +60,8 @@ namespace Application.Features.Products.Queries.GetAllProducts
 
                 var pagedProducts = await productsQuery.ToListAsync();
                 var productResponses = _mapper.Map<List<ProductResponse>>(pagedProducts);
-
-                // Cache'e ekleme
-                await _cacheService.SetCacheDataAsync(cacheKey, productResponses, TimeSpan.FromMinutes(30));
+                
+                await _cacheService.SetCacheDataAsync(cacheKey, productResponses);
 
                 response.Result = productResponses;
                 response.Durum = true;

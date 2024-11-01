@@ -2,14 +2,9 @@
 
 namespace Infrastructure.AppServices.ExternalService
 {
-    public class ExternalService : IExternalService
+    public class ExternalService(IHttpClientFactory httpClientFactory) : IExternalService
     {
-        private readonly HttpClient _client;
-
-        public ExternalService(IHttpClientFactory httpClientFactory)
-        {
-            _client = httpClientFactory.CreateClient("ExternalServiceClient");
-        }
+        private readonly HttpClient _client = httpClientFactory.CreateClient("ExternalServiceClient");
 
         public async Task<string> GetDataAsync()
         {

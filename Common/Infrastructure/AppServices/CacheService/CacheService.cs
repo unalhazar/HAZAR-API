@@ -5,20 +5,12 @@ using StackExchange.Redis;
 
 namespace Infrastructure.AppServices.CacheService
 {
-    public class CacheService : ICacheService
+    public class CacheService(IDistributedCache cache, ConnectionMultiplexer connectionMultiplexer)
+        : ICacheService
     {
-        private readonly IDistributedCache _cache;
-        private readonly ConnectionMultiplexer _connectionMultiplexer;
-
-        public CacheService(IDistributedCache cache, ConnectionMultiplexer connectionMultiplexer)
-        {
-            _cache = cache;
-            _connectionMultiplexer = connectionMultiplexer;
-        }
-
         public async Task<T> GetCachedDataAsync<T>(string cacheKey)
         {
-            var cachedData = await _cache.GetStringAsync(cacheKey);
+            var cachedData = await cache.GetStringAsync(cacheKey);
             if (string.IsNullOrEmpty(cachedData))
             {
                 return default;
@@ -26,14 +18,17 @@ namespace Infrastructure.AppServices.CacheService
             return JsonConvert.DeserializeObject<T>(cachedData);
         }
 
-        public async Task SetCacheDataAsync<T>(string cacheKey, T data, TimeSpan timeToLive)
+        public async Task SetCacheDataAsync<T>(string cacheKey, T data, TimeSpan timeToLive = default)
         {
+            if (timeToLive == default) timeToLive = TimeSpan.FromMinutes(30); // Varsayılan süre 30 dakika 
+
             var serializedData = JsonConvert.SerializeObject(data);
-            await _cache.SetStringAsync(cacheKey, serializedData, new DistributedCacheEntryOptions
+            await cache.SetStringAsync(cacheKey, serializedData, new DistributedCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = timeToLive
             });
         }
+
 
         public async Task ClearCacheByPrefixAsync(string prefix)
         {
@@ -42,16 +37,12 @@ namespace Infrastructure.AppServices.CacheService
             {
                 if (key.StartsWith(prefix))
                 {
-                    // Anahtarın silinmeye çalışıldığını log
-                    Console.WriteLine($"Cache anahtarı siliniyor: {key}");
-
-                    // Anahtarın türünü kontrol edin ve uygun şekilde sil
-                    var db = _connectionMultiplexer.GetDatabase();
+                    var db = connectionMultiplexer.GetDatabase();
                     var keyType = await db.KeyTypeAsync(key);
 
                     if (keyType == RedisType.String)
                     {
-                        await _cache.RemoveAsync(key); // String türündeki anahtarı sil
+                        await cache.RemoveAsync(key); 
                     }
                     else
                     {
@@ -63,7 +54,7 @@ namespace Infrastructure.AppServices.CacheService
 
         private Task<IEnumerable<string>> GetCacheKeysAsync()
         {
-            var server = _connectionMultiplexer.GetServer(_connectionMultiplexer.GetEndPoints().First());
+            var server = connectionMultiplexer.GetServer(connectionMultiplexer.GetEndPoints().First());
             var keys = server.Keys(database: 0, pattern: "*");
             return Task.FromResult(keys.Select(k => k.ToString()));
         }

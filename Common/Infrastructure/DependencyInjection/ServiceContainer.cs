@@ -25,6 +25,9 @@ using Polly;
 using Polly.Extensions.Http;
 using StackExchange.Redis;
 using System.Text;
+using Infrastructure.AuthService;
+using Infrastructure.Policies;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -64,21 +67,20 @@ namespace Infrastructure.DependencyInjection
             });
 
             // AuthService ile Polly Dayanıklılık Politikaları
-            services.AddHttpClient<IAuthService, Infrastructure.AuthService.AuthService>(client =>
-            {
-                client.BaseAddress = new Uri("http://localhost:5090");
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-            })
-            .AddPolicyHandler(GetRetryPolicy())
-            .AddPolicyHandler(GetCircuitBreakerPolicy())
-            .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(10))) // Zaman aşımı politikası
-            .AddPolicyHandler(Policy<HttpResponseMessage>
-            .Handle<Exception>() // Genel bir hata oluşursa
-            .FallbackAsync(new HttpResponseMessage(System.Net.HttpStatusCode.ServiceUnavailable)
-            {
-                Content = new StringContent("Geçici olarak hizmet kullanılamıyor. Lütfen daha sonra tekrar deneyin.")
-            }));
+            services.AddHttpClient<IAuthService, Infrastructure.AuthService.AuthService>((serviceProvider, client) =>
+                {
+                    var authServiceSettings = serviceProvider.GetRequiredService<IOptions<AuthServiceSettings>>().Value;
+                    client.BaseAddress = new Uri(authServiceSettings.BaseUrl);
+                    client.DefaultRequestHeaders.Add("Accept", "application/json");
+                })
+                .AddPolicyHandler(PolicyFactory.GetRetryPolicy())
+                .AddPolicyHandler(PolicyFactory.GetCircuitBreakerPolicy())
+                .AddPolicyHandler(PolicyFactory.GetTimeoutPolicy())
+                .AddPolicyHandler(PolicyFactory.GetFallbackPolicy());
 
+
+            services.Configure<AuthServiceSettings>(configuration.GetSection("AuthServiceSettings"));
+            
             // OutSource Service
             services.AddHttpClient<JsonPlaceHolderGetUserService>();
             services.AddHttpClient<SpacexRocketService>();

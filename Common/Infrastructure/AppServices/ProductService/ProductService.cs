@@ -3,15 +3,8 @@ using OfficeOpenXml;
 
 namespace Infrastructure.AppServices.ProductService
 {
-    public class ProductService : IProductService
+    public class ProductService(IProductRepository productRepository) : IProductService
     {
-        private readonly IProductRepository _productRepository;
-
-        public ProductService(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
-
         public async Task ImportProductsAsync(string filePath)
         {
             var products = new List<Product>();
@@ -36,7 +29,7 @@ namespace Infrastructure.AppServices.ProductService
                 }
             }
 
-            await _productRepository.BulkAddAsync(products);
+            await productRepository.BulkAddAsync(products);
         }
     }
 }
