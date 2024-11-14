@@ -196,6 +196,57 @@ namespace Infrastructure.Migrations
                     b.ToTable("LogUsers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Movie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AvailableCountries")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("availablecountries");
+
+                    b.Property<string>("Genres")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("genres");
+
+                    b.Property<double?>("ImdbAverageRating")
+                        .HasColumnType("double precision")
+                        .HasColumnName("imdbaveragerating");
+
+                    b.Property<string>("ImdbId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("imdbid");
+
+                    b.Property<int>("ImdbNumVotes")
+                        .HasColumnType("integer")
+                        .HasColumnName("imdbnumvotes");
+
+                    b.Property<int?>("ReleaseYear")
+                        .HasColumnType("integer")
+                        .HasColumnName("releaseyear");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("movies", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
@@ -259,6 +310,53 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("products", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.StudentLifestyle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("ExtracurricularHoursPerDay")
+                        .HasColumnType("double precision")
+                        .HasColumnName("extracurricularhoursperday");
+
+                    b.Property<double>("GPA")
+                        .HasColumnType("double precision")
+                        .HasColumnName("gpa");
+
+                    b.Property<double>("PhysicalActivityHoursPerDay")
+                        .HasColumnType("double precision")
+                        .HasColumnName("physicalactivityhoursperday");
+
+                    b.Property<double>("SleepHoursPerDay")
+                        .HasColumnType("double precision")
+                        .HasColumnName("sleephoursperday");
+
+                    b.Property<double>("SocialHoursPerDay")
+                        .HasColumnType("double precision")
+                        .HasColumnName("socialhoursperday");
+
+                    b.Property<string>("StressLevel")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("stresslevel");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("studentid");
+
+                    b.Property<double>("StudyHoursPerDay")
+                        .HasColumnType("double precision")
+                        .HasColumnName("studyhoursperday");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("studentlifestyles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
